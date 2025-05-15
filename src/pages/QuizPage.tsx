@@ -1,25 +1,54 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import QuestionList from '../components/QuestionList';
 import SubmitButton from '../components/SubmitButton';
 import { useQuestions } from '../hooks/useQuestions';
 import { calculateScore, calculatePercentage } from '../utils/score';
+import { STORAGE_KEYS, saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
+
+interface SubmissionState {
+  isSubmitted: boolean;
+  score: number;
+  percentage: number;
+}
 
 const QuizPage = () => {
-  const { questions, handleAnswerChange } = useQuestions();
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
-  const [percentage, setPercentage] = useState(0);
+  const { questions, handleAnswerChange, resetQuestions } = useQuestions();
+  
+  // Initialize submission state from localStorage
+  const [submissionState, setSubmissionState] = useState<SubmissionState>(() => {
+    const savedState = loadFromLocalStorage<SubmissionState>(STORAGE_KEYS.SUBMISSION);
+    return savedState || { isSubmitted: false, score: 0, percentage: 0 };
+  });
+  
+  const { isSubmitted, score, percentage } = submissionState;
+  
+  // Save submission state to localStorage whenever it changes
+  useEffect(() => {
+    saveToLocalStorage(STORAGE_KEYS.SUBMISSION, submissionState);
+  }, [submissionState]);
 
   const handleSubmit = () => {
     const calculatedScore = calculateScore(questions);
     const calculatedPercentage = calculatePercentage(calculatedScore, questions);
     
-    setScore(calculatedScore);
-    setPercentage(calculatedPercentage);
-    setIsSubmitted(true);
+    setSubmissionState({
+      isSubmitted: true,
+      score: calculatedScore,
+      percentage: calculatedPercentage
+    });
     
     // Scroll to top to show results
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const handleReset = () => {
+    // Reset both the questions and submission state
+    resetQuestions();
+    setSubmissionState({
+      isSubmitted: false,
+      score: 0,
+      percentage: 0
+    });
   };
 
   return (
@@ -42,13 +71,22 @@ const QuizPage = () => {
                     <p className="mt-1">Percentage: {percentage.toFixed(2)}%</p>
                   </div>
                   <div className="mt-5">
-                    <button
-                      type="button"
-                      onClick={() => setIsSubmitted(false)}
-                      className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Back to Test
-                    </button>
+                    <div className="flex space-x-4">
+                      <button
+                        type="button"
+                        onClick={() => setSubmissionState({...submissionState, isSubmitted: false})}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        Back to Test
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        Reset Test
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

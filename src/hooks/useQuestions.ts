@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Question } from '../types/question';
-import { questions as initialQuestions } from '../questions/questions';
+import { questions as defaultQuestions } from '../questions/questions';
+import { STORAGE_KEYS, saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
 
 export const useQuestions = () => {
-  const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+  // Initialize state from localStorage or use default questions
+  const [questions, setQuestions] = useState<Question[]>(() => {
+    const savedQuestions = loadFromLocalStorage<Question[]>(STORAGE_KEYS.QUESTIONS);
+    return savedQuestions || defaultQuestions;
+  });
+
+  // Save questions to localStorage whenever they change
+  useEffect(() => {
+    saveToLocalStorage(STORAGE_KEYS.QUESTIONS, questions);
+  }, [questions]);
 
   const handleAnswerChange = (id: number, answer: string) => {
     setQuestions(prevQuestions => 
@@ -16,7 +26,7 @@ export const useQuestions = () => {
   };
 
   const resetQuestions = () => {
-    setQuestions(initialQuestions.map(question => ({
+    setQuestions(defaultQuestions.map(question => ({
       ...question,
       userAnswer: null
     })));
