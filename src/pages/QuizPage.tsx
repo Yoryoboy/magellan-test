@@ -1,0 +1,73 @@
+import { useState } from 'react';
+import QuestionList from '../components/QuestionList';
+import SubmitButton from '../components/SubmitButton';
+import { useQuestions } from '../hooks/useQuestions';
+import { calculateScore, calculatePercentage } from '../utils/score';
+
+const QuizPage = () => {
+  const { questions, handleAnswerChange } = useQuestions();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+
+  const handleSubmit = () => {
+    const calculatedScore = calculateScore(questions);
+    const calculatedPercentage = calculatePercentage(calculatedScore, questions);
+    
+    setScore(calculatedScore);
+    setPercentage(calculatedPercentage);
+    setIsSubmitted(true);
+    
+    // Scroll to top to show results
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="min-h-screen bg-white pb-24">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-gray-900 text-center">Magellan Written Test</h1>
+        </div>
+      </header>
+
+      <main>
+        {isSubmitted && (
+          <div className="w-full bg-gray-50 py-8">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto bg-white overflow-hidden shadow rounded-lg">
+                <div className="px-4 py-5 sm:p-6">
+                  <h2 className="text-lg leading-6 font-medium text-gray-900">Test Results</h2>
+                  <div className="mt-2 max-w-xl text-sm text-gray-500">
+                    <p>You scored {score} out of {questions.reduce((total, q) => total + q.points, 0)} points.</p>
+                    <p className="mt-1">Percentage: {percentage.toFixed(2)}%</p>
+                  </div>
+                  <div className="mt-5">
+                    <button
+                      type="button"
+                      onClick={() => setIsSubmitted(false)}
+                      className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Back to Test
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <QuestionList 
+          questions={questions} 
+          onAnswerChange={handleAnswerChange} 
+        />
+        
+        <SubmitButton 
+          questions={questions} 
+          onSubmit={handleSubmit} 
+        />
+      </main>
+    </div>
+  );
+};
+
+export default QuizPage;

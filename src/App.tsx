@@ -1,10 +1,9 @@
 
-function App() {
+import QuizPage from './pages/QuizPage'
 
+function App() {
   return (
-    <>
-      <h1>Magellan Written Test</h1>
-    </>
+    <QuizPage />
   )
 }
 
