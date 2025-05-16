@@ -20,7 +20,7 @@ const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue }) =
     }
     
     if (!processedId) {
-      setError('Supervisor ID is required');
+      setError('Test ID is required');
       return;
     }
     
