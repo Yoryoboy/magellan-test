@@ -86,7 +86,7 @@ const IntroductionPage = ({ onStart }: IntroductionPageProps) => {
                       name="name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md ${errors.name ? 'border-red-300' : ''}`}
+                      className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-gray-900 ${errors.name ? 'border-red-300' : ''}`}
                       placeholder="John Doe"
                     />
                     {errors.name && (
@@ -106,7 +106,7 @@ const IntroductionPage = ({ onStart }: IntroductionPageProps) => {
                       name="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md ${errors.email ? 'border-red-300' : ''}`}
+                      className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md text-gray-900 ${errors.email ? 'border-red-300' : ''}`}
                       placeholder="john@example.com"
                     />
                     {errors.email && (
