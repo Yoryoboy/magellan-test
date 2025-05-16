@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { STORAGE_KEYS, saveToLocalStorage } from '../utils/localStorage';
 import type { UserData, IntroductionPageProps } from '../types/testTypes';
 
