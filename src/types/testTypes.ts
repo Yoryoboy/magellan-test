@@ -17,3 +17,7 @@ export interface QuizPageProps {
 export interface IntroductionPageProps {
   onStart: (userData: UserData) => void;
 }
+
+export interface RulesPageProps {
+  onContinue: () => void;
+}
