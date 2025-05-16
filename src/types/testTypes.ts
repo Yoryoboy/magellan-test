@@ -2,6 +2,7 @@ export interface UserData {
   name: string;
   email: string;
   startTime: string;
+  taskId?: string;
 }
 
 export interface SubmissionState {

@@ -43,10 +43,20 @@ const IntroductionPage = ({ onStart }: IntroductionPageProps) => {
     e.preventDefault();
     
     if (validateForm()) {
+      // Get the verified task ID from localStorage
+      const verifiedTaskId = localStorage.getItem('verifiedTaskId');
+      
+      if (!verifiedTaskId) {
+        // This shouldn't happen since we're coming from the verification page
+        console.error('No verified task ID found');
+        return;
+      }
+      
       const userData: UserData = {
         name,
         email,
-        startTime: new Date().toISOString()
+        startTime: new Date().toISOString(),
+        taskId: verifiedTaskId
       };
       
       // Save user data to localStorage
