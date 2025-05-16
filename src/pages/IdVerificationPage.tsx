@@ -61,7 +61,7 @@ const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue }) =
         <div className="max-w-3xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Enter Supervisor ID</h2>
+              <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Enter Test ID</h2>
               <p className="text-gray-500 mb-6">
                 Please enter the ID provided by your supervisor or manager to continue with the test.
               </p>
@@ -69,7 +69,7 @@ const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue }) =
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="supervisorId" className="block text-sm font-medium text-gray-700">
-                    Supervisor ID
+                    Test ID
                   </label>
                   <div className="mt-1">
                     <input
