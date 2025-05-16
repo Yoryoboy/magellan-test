@@ -4,14 +4,11 @@ import SubmitButton from '../components/SubmitButton';
 import { useQuestions } from '../hooks/useQuestions';
 import { calculateScore, calculatePercentage } from '../utils/score';
 import { STORAGE_KEYS, saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
+import type { UserData, SubmissionState, QuizPageProps } from '../types/testTypes';
 
-interface SubmissionState {
-  isSubmitted: boolean;
-  score: number;
-  percentage: number;
-}
 
-const QuizPage = () => {
+
+const QuizPage = ({ userData }: QuizPageProps) => {
   const { questions, handleAnswerChange, resetQuestions } = useQuestions();
   
   // Initialize submission state from localStorage
@@ -56,6 +53,10 @@ const QuizPage = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900 text-center">Magellan Written Test</h1>
+          <div className="mt-2 text-center text-gray-600">
+            <p>Welcome, {userData.name}</p>
+            <p className="text-sm">Test started: {new Date(userData.startTime).toLocaleString()}</p>
+          </div>
         </div>
       </header>
 

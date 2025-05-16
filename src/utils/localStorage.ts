@@ -1,7 +1,8 @@
 // Keys for local storage
 export const STORAGE_KEYS = {
   QUESTIONS: 'magellan-test-questions',
-  SUBMISSION: 'magellan-test-submission'
+  SUBMISSION: 'magellan-test-submission',
+  USER_DATA: 'magellan-test-user-data'
 };
 
 /**
