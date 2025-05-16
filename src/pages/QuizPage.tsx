@@ -4,7 +4,8 @@ import SubmitButton from '../components/SubmitButton';
 import { useQuestions } from '../hooks/useQuestions';
 import { calculateScore, calculatePercentage } from '../utils/score';
 import { STORAGE_KEYS, saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
-import type { UserData, SubmissionState, QuizPageProps } from '../types/testTypes';
+import { downloadTestSummaryPDF } from '../utils/pdfGenerator';
+import type { SubmissionState, QuizPageProps } from '../types/testTypes';
 
 
 
@@ -39,8 +40,16 @@ const QuizPage = ({ userData }: QuizPageProps) => {
     // Save to localStorage directly
     saveToLocalStorage(STORAGE_KEYS.SUBMISSION, submissionData);
     
-    // Show confirmation to the user that their answers were saved
-    alert('Your answers have been submitted successfully. Thank you for completing the test.');
+    try {
+      // Generate and download the PDF summary
+      downloadTestSummaryPDF(userData, questions, calculatedScore, calculatedPercentage);
+      
+      // Show confirmation to the user that their answers were saved
+      alert('Your answers have been submitted successfully. A summary PDF has been downloaded for your records.');
+    } catch (error) {
+      console.error('Error generating PDF:', error instanceof Error ? error.message : String(error));
+      alert('Your answers have been submitted successfully, but there was an error generating the PDF summary. Check the console for details.');
+    }
   };
   
   const handleReset = () => {
