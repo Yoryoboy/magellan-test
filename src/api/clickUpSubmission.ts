@@ -11,8 +11,34 @@ const CUSTOM_FIELD_IDS = {
   TEST_TAKEN: '86425b73-fdae-43b8-9102-6e4b16ea79ea'
 };
 
+// Task status constants
+export const TaskStatus = {
+  TEST_IN_PROGRESS: 'test in progress',
+  TEST_APPROVED: 'test approved',
+  TEST_FAILED: 'test failed'
+} as const;
+
 /**
- * Update native task fields (name, status, dates)
+ * Update task status
+ */
+export const updateTaskStatus = async (
+  taskId: string,
+  status: string
+): Promise<boolean> => {
+  try {
+    await clickUp.put(`/task/${taskId}`, {
+      status: status
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error updating task status:', error);
+    return false;
+  }
+};
+
+/**
+ * Update native task fields (name, dates)
  */
 export const updateTaskNativeFields = async (
   taskId: string,
@@ -167,6 +193,13 @@ export const submitTestToClickUp = async (
   const scoreUpdated = await updateTaskScore(taskId, score);
   if (!scoreUpdated) {
     errors.push('Failed to update score field');
+  }
+  
+  // Update status based on percentage
+  const status = percentage >= 80 ? TaskStatus.TEST_APPROVED : TaskStatus.TEST_FAILED;
+  const statusUpdated = await updateTaskStatus(taskId, status);
+  if (!statusUpdated) {
+    errors.push('Failed to update task status');
   }
   
   // Mark test as taken
