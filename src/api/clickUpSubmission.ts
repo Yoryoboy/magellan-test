@@ -16,12 +16,10 @@ const CUSTOM_FIELD_IDS = {
  */
 export const updateTaskNativeFields = async (
   taskId: string,
-  userData: UserData,
-  score: number,
-  percentage: number
+  userData: UserData
 ): Promise<boolean> => {
   try {
-    const testName = `Magellan Test - ${userData.name} - Score: ${score} (${Math.round(percentage)}%)`;
+    const testName = userData.name;
     const now = new Date().getTime();
     
     await clickUp.put(`/task/${taskId}`, {
@@ -154,7 +152,7 @@ export const submitTestToClickUp = async (
   const errors: string[] = [];
   
   // Update native fields
-  const nativeFieldsUpdated = await updateTaskNativeFields(taskId, userData, score, percentage);
+  const nativeFieldsUpdated = await updateTaskNativeFields(taskId, userData);
   if (!nativeFieldsUpdated) {
     errors.push('Failed to update task name and dates');
   }
