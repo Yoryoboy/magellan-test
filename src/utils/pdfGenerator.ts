@@ -208,6 +208,11 @@ export const generateTestSummaryPDF = (
 
 /**
  * Generate and download a PDF summary of the test
+ * @param userData User data including name, email, and task ID
+ * @param questions Array of questions with answers
+ * @param score The user's score
+ * @param percentage The percentage score
+ * @returns void
  */
 export const downloadTestSummaryPDF = (
   userData: UserData,
@@ -217,24 +222,27 @@ export const downloadTestSummaryPDF = (
 ): void => {
   try {
     const doc = generateTestSummaryPDF(userData, questions, score, percentage);
-    
-    // Add footer
-    const pageCount = doc.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text(
-        `Page ${i} of ${pageCount} - Generated on ${formatDate(new Date())}`,
-        105,
-        285,
-        { align: 'center' }
-      );
-    }
-    
     doc.save(`magellan-test-summary-${userData.name.replace(/\s+/g, '-')}.pdf`);
   } catch (error) {
     console.error('Error downloading PDF:', error);
     throw error;
   }
+};
+
+/**
+ * Generates a PDF summary of the test results without downloading it
+ * This is used for uploading to ClickUp
+ * @param userData User data including name, email, and task ID
+ * @param questions Array of questions with answers
+ * @param score The user's score
+ * @param percentage The percentage score
+ * @returns The generated PDF object
+ */
+export const generatePDFForUpload = (
+  userData: UserData,
+  questions: Question[],
+  score: number,
+  percentage: number
+): jsPDF => {
+  return generateTestSummaryPDF(userData, questions, score, percentage);
 };

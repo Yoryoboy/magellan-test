@@ -1,7 +1,8 @@
 import axios from "axios";
 import { CLICKUP_API_KEY } from "../config";
 
-const clickUp = axios.create({
+// Export the axios instance for use in other files
+export const clickUp = axios.create({
     baseURL: "https://api.clickup.com/api/v2",
     headers: {
       "Content-Type": "application/json",

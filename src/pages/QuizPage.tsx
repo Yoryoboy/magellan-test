@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import QuestionList from '../components/QuestionList';
 import SubmitButton from '../components/SubmitButton';
+import CompletionMessage from '../components/CompletionMessage';
 import { useQuestions } from '../hooks/useQuestions';
 import { calculateScore, calculatePercentage } from '../utils/score';
 import { STORAGE_KEYS, saveToLocalStorage, loadFromLocalStorage } from '../utils/localStorage';
-import { downloadTestSummaryPDF } from '../utils/pdfGenerator';
+import { submitTestToClickUp } from '../api/clickUpSubmission';
 import type { SubmissionState, QuizPageProps } from '../types/testTypes';
 
 
 
 const QuizPage = ({ userData }: QuizPageProps) => {
-  const { questions, handleAnswerChange, resetQuestions } = useQuestions();
+  const { questions, handleAnswerChange } = useQuestions();
   
   // Initialize submission state from localStorage
   const [submissionState, setSubmissionState] = useState<SubmissionState>(() => {
@@ -18,48 +19,64 @@ const QuizPage = ({ userData }: QuizPageProps) => {
     return savedState || { isSubmitted: false, score: 0, percentage: 0 };
   });
   
-  const { isSubmitted, score, percentage } = submissionState;
+  // We don't need to destructure these values anymore as we're using the state directly
+  
+  // State for submission process
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCompletionMessage, setShowCompletionMessage] = useState(false);
+  const [submissionErrors, setSubmissionErrors] = useState<string[]>([]);
   
   // Save submission state to localStorage whenever it changes
   useEffect(() => {
     saveToLocalStorage(STORAGE_KEYS.SUBMISSION, submissionState);
   }, [submissionState]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    setSubmissionErrors([]);
+    
     const calculatedScore = calculateScore(questions);
     const calculatedPercentage = calculatePercentage(calculatedScore, questions);
     
-    // Save the score and percentage to localStorage without setting isSubmitted to true
+    // Save the score and percentage to localStorage
     const submissionData = {
-      isSubmitted: false, // Keep this false so results aren't shown
+      isSubmitted: true, // Now we can set this to true since we'll show our own message
       score: calculatedScore,
       percentage: calculatedPercentage,
-      timestamp: new Date().toISOString() // Add timestamp for when the test was completed
+      timestamp: new Date().toISOString()
     };
     
-    // Save to localStorage directly
+    // Save to localStorage
     saveToLocalStorage(STORAGE_KEYS.SUBMISSION, submissionData);
+    setSubmissionState(submissionData);
     
     try {
-      // Generate and download the PDF summary
-      downloadTestSummaryPDF(userData, questions, calculatedScore, calculatedPercentage);
+      // Submit all data to ClickUp
+      const result = await submitTestToClickUp(
+        userData,
+        questions,
+        calculatedScore,
+        calculatedPercentage
+      );
       
-      // Show confirmation to the user that their answers were saved
-      alert('Your answers have been submitted successfully. A summary PDF has been downloaded for your records.');
+      if (!result.success) {
+        console.error('Errors during submission:', result.errors);
+        setSubmissionErrors(result.errors);
+      }
+      
+      // Show completion message regardless of API success
+      // The data is saved locally, so the user can try again later if needed
+      setShowCompletionMessage(true);
     } catch (error) {
-      console.error('Error generating PDF:', error instanceof Error ? error.message : String(error));
-      alert('Your answers have been submitted successfully, but there was an error generating the PDF summary. Check the console for details.');
+      console.error('Error during submission:', error instanceof Error ? error.message : String(error));
+      setSubmissionErrors(['An unexpected error occurred during submission.']);
+      setShowCompletionMessage(true); // Still show completion message
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-  
-  const handleReset = () => {
-    // Reset both the questions and submission state
-    resetQuestions();
-    setSubmissionState({
-      isSubmitted: false,
-      score: 0,
-      percentage: 0
-    });
   };
 
   return (
@@ -75,49 +92,56 @@ const QuizPage = ({ userData }: QuizPageProps) => {
       </header>
 
       <main>
-        {isSubmitted && (
-          <div className="w-full bg-gray-50 py-8">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto bg-white overflow-hidden shadow rounded-lg">
-                <div className="px-4 py-5 sm:p-6">
-                  <h2 className="text-lg leading-6 font-medium text-gray-900">Test Results</h2>
-                  <div className="mt-2 max-w-xl text-sm text-gray-500">
-                    <p>You scored {score} out of {questions.reduce((total, q) => total + q.points, 0)} points.</p>
-                    <p className="mt-1">Percentage: {percentage.toFixed(2)}%</p>
-                  </div>
-                  <div className="mt-5">
-                    <div className="flex space-x-4">
-                      <button
-                        type="button"
-                        onClick={() => setSubmissionState({...submissionState, isSubmitted: false})}
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Back to Test
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleReset}
-                        className="inline-flex items-center px-4 py-2 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                      >
-                        Reset Test
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         <QuestionList 
           questions={questions} 
           onAnswerChange={handleAnswerChange} 
         />
         
-        <SubmitButton 
-          questions={questions} 
-          onSubmit={handleSubmit} 
-        />
+        {/* Show the submit button only if not already submitting */}
+        {!isSubmitting && !showCompletionMessage && (
+          <SubmitButton 
+            questions={questions} 
+            onSubmit={handleSubmit} 
+          />
+        )}
+        
+        {/* Show a loading indicator if submitting */}
+        {isSubmitting && (
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex justify-center items-center">
+            <div className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>Submitting your test results...</span>
+            </div>
+          </div>
+        )}
+        
+        {/* Show completion message */}
+        <CompletionMessage isVisible={showCompletionMessage} />
+        
+        {/* Show submission errors if any */}
+        {submissionErrors.length > 0 && showCompletionMessage && (
+          <div className="fixed bottom-4 right-4 max-w-md bg-white rounded-lg shadow-lg border border-red-200 p-4 z-50">
+            <h3 className="text-sm font-medium text-red-800">Some errors occurred during submission:</h3>
+            <ul className="mt-2 text-sm text-red-700 list-disc list-inside">
+              {submissionErrors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-gray-500">
+              Your test results have been saved locally. You can close this message.
+            </p>
+            <button 
+              onClick={() => setSubmissionErrors([])} 
+              className="mt-2 text-xs text-gray-500 hover:text-gray-700"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
