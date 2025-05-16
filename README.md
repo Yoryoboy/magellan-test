@@ -1,7 +1,5 @@
 # Magellan Written Test Application
 
-![Magellan Test Banner](https://via.placeholder.com/1200x300/4F46E5/FFFFFF?text=Magellan+Written+Test)
-
 A modern, React-based application for administering and managing written tests with seamless ClickUp integration for tracking and reporting.
 
 ## 🚀 Overview
