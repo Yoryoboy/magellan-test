@@ -1,13 +1,15 @@
 import { clickUp } from './clickUp';
 import { TaskStatus } from './clickUpSubmission';
+import type { UserData } from '../types/testTypes';
 
 /**
- * Update task status to "test in progress" when user starts the test
+ * Update task status to "test in progress" and set task name when user starts the test
  */
-export const updateTaskToInProgress = async (taskId: string): Promise<boolean> => {
+export const updateTaskToInProgress = async (taskId: string, userData: UserData): Promise<boolean> => {
   try {
     await clickUp.put(`/task/${taskId}`, {
-      status: TaskStatus.TEST_IN_PROGRESS
+      status: TaskStatus.TEST_IN_PROGRESS,
+      name: userData.name
     });
     
     return true;

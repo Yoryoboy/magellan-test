@@ -70,9 +70,9 @@ const IntroductionPage = ({ onStart }: IntroductionPageProps) => {
       // Save user data to localStorage
       saveToLocalStorage(STORAGE_KEYS.USER_DATA, userData);
       
-      // Update task status to "test in progress"
+      // Update task status to "test in progress" and set task name
       try {
-        const statusUpdated = await updateTaskToInProgress(verifiedTaskId);
+        const statusUpdated = await updateTaskToInProgress(verifiedTaskId, userData);
         if (!statusUpdated) {
           // Non-blocking error - we'll continue even if status update fails
           console.error('Failed to update task status to in progress');

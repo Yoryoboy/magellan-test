@@ -3,6 +3,7 @@ import type { Question } from '../types/question';
 import type { UserData } from '../types/testTypes';
 import { jsPDF } from 'jspdf';
 import { generatePDFForUpload } from '../utils/pdfGenerator';
+import { STORAGE_KEYS } from '../utils/localStorage';
 
 // Constants for custom field IDs
 const CUSTOM_FIELD_IDS = {
@@ -38,18 +39,17 @@ export const updateTaskStatus = async (
 };
 
 /**
- * Update native task fields (name, dates)
+ * Update native task fields (only dates, name is already set when test starts)
  */
 export const updateTaskNativeFields = async (
   taskId: string,
   userData: UserData
 ): Promise<boolean> => {
   try {
-    const testName = userData.name;
     const now = new Date().getTime();
     
+    // Update the task name to include the score
     await clickUp.put(`/task/${taskId}`, {
-      name: testName,
       due_date: now,
       start_date: new Date(userData.startTime).getTime(),
       due_date_time: true,
@@ -221,6 +221,21 @@ export const submitTestToClickUp = async (
   } catch (error) {
     errors.push('Failed to generate or upload PDF');
     console.error('PDF generation or upload error:', error);
+  }
+  
+  // If successful, clear localStorage
+  if (errors.length === 0) {
+    try {
+      // Clear all test-related data from localStorage
+      localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      localStorage.removeItem(STORAGE_KEYS.SUBMISSION);
+      localStorage.removeItem(STORAGE_KEYS.QUESTIONS);
+      localStorage.removeItem('verifiedTaskId');
+      console.log('Successfully cleared localStorage after submission');
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
+      // Non-blocking error - we'll still return success
+    }
   }
   
   return {
