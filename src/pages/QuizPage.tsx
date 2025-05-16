@@ -28,14 +28,19 @@ const QuizPage = ({ userData }: QuizPageProps) => {
     const calculatedScore = calculateScore(questions);
     const calculatedPercentage = calculatePercentage(calculatedScore, questions);
     
-    setSubmissionState({
-      isSubmitted: true,
+    // Save the score and percentage to localStorage without setting isSubmitted to true
+    const submissionData = {
+      isSubmitted: false, // Keep this false so results aren't shown
       score: calculatedScore,
-      percentage: calculatedPercentage
-    });
+      percentage: calculatedPercentage,
+      timestamp: new Date().toISOString() // Add timestamp for when the test was completed
+    };
     
-    // Scroll to top to show results
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Save to localStorage directly
+    saveToLocalStorage(STORAGE_KEYS.SUBMISSION, submissionData);
+    
+    // Show confirmation to the user that their answers were saved
+    alert('Your answers have been submitted successfully. Thank you for completing the test.');
   };
   
   const handleReset = () => {
