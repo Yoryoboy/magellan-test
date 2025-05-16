@@ -21,3 +21,7 @@ export interface IntroductionPageProps {
 export interface RulesPageProps {
   onContinue: () => void;
 }
+
+export interface IdVerificationPageProps {
+  onContinue: () => void;
+}
