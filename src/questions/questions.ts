@@ -8,7 +8,7 @@ export const questions = [
         "Transition splice",
         "Common splice"
       ],
-      correctAnswer: "Transition splice",
+      correctAnswer: ["Transition splice"],
       points: 1,
       userAnswer: null
     },
@@ -16,7 +16,7 @@ export const questions = [
       id: 4,
       question: "How many outputs does a Line Extender have?",
       options: ["1", "2", "3", "4"],
-      correctAnswer: "1",
+      correctAnswer: ["1"],
       points: 1,
       userAnswer: null
     },
@@ -24,7 +24,7 @@ export const questions = [
       id: 5,
       question: "What kinds of equipment can be placed using the support workstream?",
       options: ["Risers", "Fiber Span", "ORF Cable", "Splice Blocks"],
-      correctAnswer: "Risers",
+      correctAnswer: ["Risers"],
       points: 1,
       userAnswer: null
     },
@@ -37,7 +37,7 @@ export const questions = [
         "OCHR-31568952-01",
         "CHR_3156kalispellct_01"
       ],
-      correctAnswer: "OCHR-31568952-01",
+      correctAnswer: ["OCHR-31568952-01"],
       points: 1,
       userAnswer: null
     },
@@ -50,7 +50,7 @@ export const questions = [
         "Shows taps that are working properly",
         "Shows any mistakes made in the design"
       ],
-      correctAnswer: "Shows the powering levels for the node",
+      correctAnswer: ["Shows the powering levels for the node"],
       points: 1,
       userAnswer: null
     },
@@ -63,7 +63,7 @@ export const questions = [
         "You can't",
         "Double-click on an existing house count"
       ],
-      correctAnswer: "Select support structure > click 'sub features' > click 'address' > click house icon",
+      correctAnswer: ["Select support structure > click 'sub features' > click 'address' > click house icon"],
       points: 1,
       userAnswer: null
     },
@@ -76,7 +76,7 @@ export const questions = [
         "Return Optical Wave",
         "Redundancy Optical Wave"
       ],
-      correctAnswer: "Right of Way",
+      correctAnswer: ["Right of Way"],
       points: 1,
       userAnswer: null
     },
@@ -89,7 +89,7 @@ export const questions = [
         "You can disconnect/reconnect in either direction",
         "You must disconnect/reconnect downstream to upstream in that order"
       ],
-      correctAnswer: "You can disconnect/reconnect in either direction",
+      correctAnswer: ["You can disconnect/reconnect in either direction"],
       points: 1,
       userAnswer: null
     },
@@ -97,7 +97,7 @@ export const questions = [
       id: 11,
       question: "How many buffer tubes are in a 48ct sheath with a standard 6ct buffer tube?",
       options: ["4", "8", "There are no sheaths that large"],
-      correctAnswer: "8",
+      correctAnswer: ["8"],
       points: 1,
       userAnswer: null
     },
@@ -110,7 +110,7 @@ export const questions = [
         "Shortcuts are not allowed in Magellan",
         "They are set up in the Options button"
       ],
-      correctAnswer: "You can add, create, and edit Hot Keys",
+      correctAnswer: ["You can add, create, and edit Hot Keys"],
       points: 1,
       userAnswer: null
     },
@@ -123,7 +123,7 @@ export const questions = [
         "Rotates new devices",
         "Closes the workstream"
       ],
-      correctAnswer: "Confirms placement/rotation and continues workstream",
+      correctAnswer: ["Confirms placement/rotation and continues workstream"],
       points: 1,
       userAnswer: null
     },
@@ -136,7 +136,7 @@ export const questions = [
         "Power Inserter",
         "Splice Block"
       ],
-      correctAnswer: "Power Inserter",
+      correctAnswer: ["Power Inserter"],
       points: 1,
       userAnswer: null
     },
@@ -149,7 +149,7 @@ export const questions = [
           "Upstream / Forward",
           "Downstream / Return"
         ],
-        correctAnswer: "Downstream / Forward",
+        correctAnswer: ["Downstream / Forward"],
         points: 1,
         userAnswer: null
       },
@@ -162,7 +162,7 @@ export const questions = [
           "DK",
           "OSP"
         ],
-        correctAnswer: "WK",
+        correctAnswer: ["WK"],
         points: 1,
         userAnswer: null
       },
@@ -175,7 +175,7 @@ export const questions = [
           "The limit does not exist",
           ">4"
         ],
-        correctAnswer: ">4",
+        correctAnswer: [">4"],
         points: 1,
         userAnswer: null
       },
@@ -188,7 +188,7 @@ export const questions = [
           "1430, 1450, 1470, 1490",
           "1510, 1530, 1550, 1570"
         ],
-        correctAnswer: "1470, 1510, 1550, 1590",
+        correctAnswer: ["1470, 1510, 1550, 1590"],
         points: 1,
         userAnswer: null
       },
@@ -696,7 +696,7 @@ export const questions = [
         id: 64,
         question: "How many customers can be served from a pair of 8-channel mux cards if each customer needs an RX & TX?",
         options: ["4", "16", "8", "2"],
-        correctAnswer: "8",
+        correctAnswer: ["8"],
         points: 1,
         userAnswer: null
       },
@@ -950,7 +950,7 @@ export const questions = [
         id: 87,
         question: "Which device has the lowest signal loss on the through leg?",
         options: ["Unbalanced 3-Way", "2-Way", "DC12", "DC8"],
-        correctAnswer: "2-Way",
+        correctAnswer: ["2-Way"],
         points: 1,
         userAnswer: null
       },

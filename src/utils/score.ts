@@ -3,7 +3,7 @@ import type { Question } from '../types/question';
 
 export const calculateScore = (questions: Question[]): number => {
   return questions.reduce((total, question) => {
-    if (question.userAnswer === question.correctAnswer) {
+    if (question.userAnswer && question.correctAnswer.includes(question.userAnswer)) {
       return total + question.points;
     }
     return total;
