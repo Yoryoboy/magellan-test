@@ -9,7 +9,8 @@ import { STORAGE_KEYS } from '../utils/localStorage';
 const CUSTOM_FIELD_IDS = {
   PERCENTAGE: '30e78776-5ab6-4a87-a237-36532747b00f',
   SCORE: '60de12c9-9b1c-43a8-af48-184953ac4b78',
-  TEST_TAKEN: '86425b73-fdae-43b8-9102-6e4b16ea79ea'
+  TEST_TAKEN: '86425b73-fdae-43b8-9102-6e4b16ea79ea',
+  EMAIL: 'fd571de9-68c3-4a8d-94e6-2aa0c6a1957d'
 };
 
 // Task status constants
@@ -122,6 +123,25 @@ export const markTestAsTaken = async (
 };
 
 /**
+ * Update the email custom field
+ */
+export const updateTaskEmail = async (
+  taskId: string,
+  email: string
+): Promise<boolean> => {
+  try {
+    await clickUp.post(`/task/${taskId}/field/${CUSTOM_FIELD_IDS.EMAIL}`, {
+      value: email
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error updating task email:', error);
+    return false;
+  }
+};
+
+/**
  * Upload PDF as attachment to the task
  */
 export const uploadPdfToTask = async (
@@ -206,6 +226,12 @@ export const submitTestToClickUp = async (
   const testMarkedAsTaken = await markTestAsTaken(taskId);
   if (!testMarkedAsTaken) {
     errors.push('Failed to mark test as taken');
+  }
+  
+  // Update email field
+  const emailUpdated = await updateTaskEmail(taskId, userData.email);
+  if (!emailUpdated) {
+    errors.push('Failed to update email field');
   }
   
   // Generate PDF
