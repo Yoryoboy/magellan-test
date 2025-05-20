@@ -21,14 +21,6 @@ export const questions = [
       userAnswer: null
     },
     {
-      id: 5,
-      question: "What kinds of equipment can be placed using the support workstream?",
-      options: ["Risers", "Fiber Span", "ORF Cable", "Splice Blocks"],
-      correctAnswer: ["Risers"],
-      points: 1,
-      userAnswer: null
-    },
-    {
       id: 6,
       question: "Which of the following is an acceptable workspace name?",
       options: [

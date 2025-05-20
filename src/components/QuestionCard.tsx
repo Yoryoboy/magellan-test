@@ -2,7 +2,7 @@ import type { Question } from '../types/question';
 
 interface QuestionCardProps {
   question: Question;
-  onAnswerChange: (id: number, answer: string) => void;
+  onAnswerChange: (id: number, answer: string, isChecked: boolean) => void;
 }
 
 const QuestionCard = ({ question, onAnswerChange }: QuestionCardProps) => {
@@ -25,11 +25,11 @@ const QuestionCard = ({ question, onAnswerChange }: QuestionCardProps) => {
             <div className="flex items-center h-5">
               <input
                 id={`question-${question.id}-option-${index}`}
-                name={`question-${question.id}`}
-                type="radio"
+                name={`question-${question.id}-option-${index}`}
+                type="checkbox"
                 className="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500"
-                checked={question.userAnswer === option}
-                onChange={() => onAnswerChange(question.id, option)}
+                checked={question.userAnswer ? question.userAnswer.includes(option) : false}
+                onChange={(e) => onAnswerChange(question.id, option, e.target.checked)}
                 aria-labelledby={`question-${question.id}-option-${index}-label`}
               />
             </div>

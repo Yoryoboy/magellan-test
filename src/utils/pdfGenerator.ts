@@ -141,9 +141,22 @@ export const generateTestSummaryPDF = (
     drawSectionHeader(doc, 'Incorrect Answers', incorrectAnswersSectionY);
     
     // Filter incorrect answers
-    const incorrectAnswers = questions.filter(q => 
-      q.userAnswer !== null && q.userAnswer !== q.correctAnswer
-    );
+    const incorrectAnswers = questions.filter(q => {
+      if (!q.userAnswer) return false;
+      
+      // Verificar si todas las respuestas del usuario están en las correctas
+      const allUserAnswersAreCorrect = q.userAnswer.every(answer => 
+        q.correctAnswer.includes(answer)
+      );
+      
+      // Verificar si todas las respuestas correctas están seleccionadas
+      const allCorrectAnswersSelected = q.correctAnswer.every(answer => 
+        q.userAnswer?.includes(answer) || false
+      );
+      
+      // La respuesta es incorrecta si alguna de las condiciones no se cumple
+      return !(allUserAnswersAreCorrect && allCorrectAnswersSelected);
+    });
     
     if (incorrectAnswers.length === 0) {
       drawRoundedRect(doc, 10, incorrectAnswersSectionY + 10, 190, 20, 4, '#DCFCE7');
@@ -179,7 +192,7 @@ export const generateTestSummaryPDF = (
         doc.setTextColor('#991B1B'); // Red for incorrect answer
         doc.text('Your answer:', 20, yPosition);
         doc.setFont('helvetica', 'normal');
-        doc.text(q.userAnswer || 'No answer', 70, yPosition);
+        doc.text(q.userAnswer ? q.userAnswer.join(', ') : 'No answer', 70, yPosition);
         yPosition += 6;
         
         // Add correct answer
@@ -187,7 +200,7 @@ export const generateTestSummaryPDF = (
         doc.setTextColor('#166534'); // Green for correct answer
         doc.text('Correct answer:', 20, yPosition);
         doc.setFont('helvetica', 'normal');
-        doc.text(q.correctAnswer, 70, yPosition);
+        doc.text(q.correctAnswer.join(', '), 70, yPosition);
         doc.setTextColor('#000000'); // Reset text color
         yPosition += 15;
         

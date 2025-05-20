@@ -15,13 +15,36 @@ export const useQuestions = () => {
     saveToLocalStorage(STORAGE_KEYS.QUESTIONS, questions);
   }, [questions]);
 
-  const handleAnswerChange = (id: number, answer: string) => {
+  const handleAnswerChange = (id: number, answer: string, isChecked: boolean) => {
     setQuestions(prevQuestions => 
-      prevQuestions.map(question => 
-        question.id === id 
-          ? { ...question, userAnswer: answer } 
-          : question
-      )
+      prevQuestions.map(question => {
+        if (question.id === id) {
+          // Si es la primera respuesta, inicializar el array
+          if (!question.userAnswer) {
+            return isChecked 
+              ? { ...question, userAnswer: [answer] } 
+              : question;
+          }
+          
+          // Si ya hay respuestas, agregar o quitar según corresponda
+          if (isChecked) {
+            // Si la respuesta no está en el array, agregarla
+            if (!question.userAnswer.includes(answer)) {
+              return { ...question, userAnswer: [...question.userAnswer, answer] };
+            }
+          } else {
+            // Si la respuesta está en el array, quitarla
+            if (question.userAnswer.includes(answer)) {
+              const updatedAnswers = question.userAnswer.filter(ans => ans !== answer);
+              return { 
+                ...question, 
+                userAnswer: updatedAnswers.length > 0 ? updatedAnswers : null 
+              };
+            }
+          }
+        }
+        return question;
+      })
     );
   };
 

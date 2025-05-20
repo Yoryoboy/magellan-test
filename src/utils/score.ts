@@ -3,9 +3,30 @@ import type { Question } from '../types/question';
 
 export const calculateScore = (questions: Question[]): number => {
   return questions.reduce((total, question) => {
-    if (question.userAnswer && question.correctAnswer.includes(question.userAnswer)) {
+    // Si no hay respuesta del usuario, no suma puntos
+    if (!question.userAnswer) {
+      return total;
+    }
+
+    // Verificar si las respuestas del usuario coinciden con las correctas
+    // Para considerar correcta una pregunta, todas las respuestas seleccionadas deben ser correctas
+    // y no debe faltar ninguna respuesta correcta
+    
+    // Verificar que todas las respuestas del usuario estén en las correctas
+    const allUserAnswersAreCorrect = question.userAnswer.every(answer => 
+      question.correctAnswer.includes(answer)
+    );
+    
+    // Verificar que todas las respuestas correctas estén seleccionadas
+    const allCorrectAnswersSelected = question.correctAnswer.every(answer => 
+      question.userAnswer?.includes(answer) || false
+    );
+    
+    // Solo suma puntos si ambas condiciones se cumplen
+    if (allUserAnswersAreCorrect && allCorrectAnswersSelected) {
       return total + question.points;
     }
+    
     return total;
   }, 0);
 };

@@ -3,7 +3,7 @@ import QuestionCard from './QuestionCard';
 
 interface QuestionListProps {
   questions: Question[];
-  onAnswerChange: (id: number, answer: string) => void;
+  onAnswerChange: (id: number, answer: string, isChecked: boolean) => void;
 }
 
 const QuestionList = ({ questions, onAnswerChange }: QuestionListProps) => {
