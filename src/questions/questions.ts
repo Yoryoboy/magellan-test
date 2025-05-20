@@ -37,7 +37,20 @@ export const questions = [
         "OCHR-31568952-01",
         "CHR_3156kalispellct_01"
       ],
-      correctAnswer: ["OCHR-31568952-01"],
+      correctAnswer: ["CHR_3156kalispellct_01"],
+      points: 1,
+      userAnswer: null
+    },
+    {
+      id: 601,
+      question: "What kinds of equipment can be placed using the support workstream?",
+      options: [
+        "Risers",
+        "Fiber Span",
+        "ORF Cable",
+        "Splice Blocks"
+      ],
+      correctAnswer: ["Risers", "Fiber Span", "ORF Cable", "Splice Blocks"],
       points: 1,
       userAnswer: null
     },
@@ -89,7 +102,7 @@ export const questions = [
         "You can disconnect/reconnect in either direction",
         "You must disconnect/reconnect downstream to upstream in that order"
       ],
-      correctAnswer: ["You can disconnect/reconnect in either direction"],
+      correctAnswer: ["You must disconnect/reconnect downstream to upstream in that order"],
       points: 1,
       userAnswer: null
     },
@@ -110,7 +123,7 @@ export const questions = [
         "Shortcuts are not allowed in Magellan",
         "They are set up in the Options button"
       ],
-      correctAnswer: ["You can add, create, and edit Hot Keys"],
+      correctAnswer: ["They are set up in the settings tool"],
       points: 1,
       userAnswer: null
     },
@@ -136,7 +149,7 @@ export const questions = [
         "Power Inserter",
         "Splice Block"
       ],
-      correctAnswer: ["Power Inserter"],
+      correctAnswer: ["Power Block"],
       points: 1,
       userAnswer: null
     },
@@ -175,7 +188,7 @@ export const questions = [
           "The limit does not exist",
           ">4"
         ],
-        correctAnswer: [">4"],
+        correctAnswer: ["The limit does not exist"],
         points: 1,
         userAnswer: null
       },
@@ -188,7 +201,7 @@ export const questions = [
           "1430, 1450, 1470, 1490",
           "1510, 1530, 1550, 1570"
         ],
-        correctAnswer: ["1470, 1510, 1550, 1590"],
+        correctAnswer: ["1470, 1490, 1510, 1530"],
         points: 1,
         userAnswer: null
       },
@@ -201,7 +214,7 @@ export const questions = [
           "Add an address using sub-features",
           "Use the inspector panel edit tool"
         ],
-        correctAnswer: "Add an address using sub-features",
+        correctAnswer: ["Add an address using sub-features"],
         points: 1,
         userAnswer: null
       },
@@ -214,7 +227,7 @@ export const questions = [
           "Tap values can never be changed once placed",
           "Tap values can be edited with the inspector tool"
         ],
-        correctAnswer: "Tap values can be edited with the inspector tool",
+        correctAnswer: ["Tap values can be edited with the inspector tool"],
         points: 1,
         userAnswer: null
       },
@@ -222,7 +235,7 @@ export const questions = [
         id: 21,
         question: "Which of the following tap values is a self-terminating two-port tap?",
         options: ["2", "4", "8"],
-        correctAnswer: "2",
+        correctAnswer: ["4"],
         points: 1,
         userAnswer: null
       },
@@ -230,7 +243,7 @@ export const questions = [
         id: 22,
         question: "Which of the following can't be placed from a workstream?",
         options: ["HFC Nodes", "Amp Data Blocks", "Power Inserters", "Fiber Splices"],
-        correctAnswer: "Fiber Splices",
+        correctAnswer: ["Amp Data Blocks"],
         points: 1,
         userAnswer: null
       },
@@ -243,7 +256,7 @@ export const questions = [
           "They are installed to provide enough slack for moving splices to perform splicing",
           "They should be installed every 500 feet"
         ],
-        correctAnswer: "They are installed to provide enough slack for moving splices to perform splicing",
+        correctAnswer: ["They are installed to provide enough slack for moving splices to perform splicing"],
         points: 1,
         userAnswer: null
       },
@@ -256,7 +269,7 @@ export const questions = [
           "Singular coax and fiber elements can be associated with multiple support elements",
           "Support elements are required before you can place other workstream elements"
         ],
-        correctAnswer: "Support elements are required before you can place other workstream elements",
+        correctAnswer: ["Support elements are required before you can place other workstream elements"],
         points: 1,
         userAnswer: null
       },
@@ -264,7 +277,7 @@ export const questions = [
         id: 25,
         question: "How many fibers are in a buffer tube with a 6ct cross section?",
         options: ["6", "12", "18", "24"],
-        correctAnswer: "6",
+        correctAnswer: ["6"],
         points: 1,
         userAnswer: null
       },
@@ -272,7 +285,7 @@ export const questions = [
         id: 26,
         question: "Which of the following is NOT a type of aerial route in Magellan?",
         options: ["Slack", "Overhead guy", "Conduit", "Aerial"],
-        correctAnswer: "Conduit",
+        correctAnswer: ["Conduit"],
         points: 1,
         userAnswer: null
       },
@@ -285,7 +298,7 @@ export const questions = [
           "Toggle layers",
           "You can't, all elements must be seen at all times"
         ],
-        correctAnswer: "Toggle layers",
+        correctAnswer: ["Toggle layers"],
         points: 1,
         userAnswer: null
       },
@@ -293,7 +306,7 @@ export const questions = [
         id: 28,
         question: "Which of the following can be changed with the edit button in Job Management?",
         options: ["Work Area", "Type", "Status", "Description"],
-        correctAnswer: "Description",
+        correctAnswer: ["Type"],
         points: 1,
         userAnswer: null
       },
@@ -306,7 +319,7 @@ export const questions = [
           "Not enough FWD and/or RTN signal",
           "All these answers are true"
         ],
-        correctAnswer: "All these answers are true",
+        correctAnswer: ["All these answers are true"],
         points: 1,
         userAnswer: null
       },
@@ -319,7 +332,7 @@ export const questions = [
           "Save new view and name it 'HOME'",
           "Open the save view tool and check the 'save as home' box"
         ],
-        correctAnswer: "Open the save view tool and check the 'save as home' box",
+        correctAnswer: ["Open the save view tool and check the 'save as home' box"],
         points: 1,
         userAnswer: null
       },
@@ -332,7 +345,7 @@ export const questions = [
           "Loads all found elements onto your Magellan window",
           "Finds missing element information in Magellan"
         ],
-        correctAnswer: "Locates any elements in Magellan using specified criteria",
+        correctAnswer: ["Locates any elements in Magellan using specified criteria"],
         points: 1,
         userAnswer: null
       },
@@ -340,7 +353,7 @@ export const questions = [
         id: 32,
         question: "What piece of equipment can be placed to prevent a certain leg or run of equipment from receiving power?",
         options: ["Splice Block", "ODC12", "Power Inserter", "Power Block"],
-        correctAnswer: "Power Block",
+        correctAnswer: ["Power Block"],
         points: 1,
         userAnswer: null
       },
@@ -348,7 +361,7 @@ export const questions = [
         id: 33,
         question: "How many actives, not including the NODE, can be designed in sequence in a node with a cascade rule of N+2?",
         options: ["As many as needed", "3", "2", "0"],
-        correctAnswer: "2",
+        correctAnswer: ["2"],
         points: 1,
         userAnswer: null
       },
@@ -361,7 +374,7 @@ export const questions = [
           "Update support footage since they are linked",
           "Double-click on fiber sheath > edit length"
         ],
-        correctAnswer: "Inspector panel > edit tool on each",
+        correctAnswer: ["Update support footage since they are linked"],
         points: 1,
         userAnswer: null
       },
@@ -374,7 +387,7 @@ export const questions = [
           "There is a tilt/crossover in the signal levels",
           "A larger than necessary tap size is used (e.g., a 4-port tap used for 1 address)"
         ],
-        correctAnswer: "There is a tilt/crossover in the signal levels",
+        correctAnswer: ["There is a tilt/crossover in the signal levels"],
         points: 1,
         userAnswer: null
       },
@@ -382,7 +395,7 @@ export const questions = [
         id: 36,
         question: "Which of the following does NOT have the option to generate a Trace Report?",
         options: ["Circuit Manager", "Reports Tool", "Inspector Panel", "Splice Matrix Window"],
-        correctAnswer: "Inspector Panel",
+        correctAnswer: ["Circuit Manager"],
         points: 1,
         userAnswer: null
       },
@@ -390,7 +403,7 @@ export const questions = [
         id: 37,
         question: "What are the powering supplies and power cables found under in the workstream tool?",
         options: ["Both Coax and Fiber Section", "Coax Section", "Fiber Section", "Powering Section"],
-        correctAnswer: "Powering Section",
+        correctAnswer: ["Coax Section", "Powering Section"],
         points: 1,
         userAnswer: null
       },
@@ -398,7 +411,7 @@ export const questions = [
         id: 38,
         question: "What is the common coax return frequency range used in our design?",
         options: ["5 - 42 MHz", "108 - 256 MHz", "42 - 54 MHz", "5 - 54 MHz"],
-        correctAnswer: "5 - 42 MHz",
+        correctAnswer: ["5 - 42 MHz"],
         points: 1,
         userAnswer: null
       },
@@ -411,7 +424,7 @@ export const questions = [
           "Recal > Global Recalc",
           "Select Coax span > click 'link element' tool in inspector panel > left-click on support"
         ],
-        correctAnswer: "Select Coax span > click 'link element' tool in inspector panel > left-click on support",
+        correctAnswer: ["Select Coax span > click 'link element' tool in inspector panel > left-click on support"],
         points: 1,
         userAnswer: null
       },
@@ -419,7 +432,7 @@ export const questions = [
         id: 40,
         question: "The optical components used in an HFC node are commonly referred to as what?",
         options: ["Lasers and Diodes", "Upstream and Downstream", "Receivers and Transmitters", "In and Out"],
-        correctAnswer: "Receivers and Transmitters",
+        correctAnswer: ["Receivers and Transmitters"],
         points: 1,
         userAnswer: null
       },
@@ -432,7 +445,7 @@ export const questions = [
           "Closes your current job",
           "Sends the job to QC"
         ],
-        correctAnswer: "Opens the settings for your job",
+        correctAnswer: ["Closes your current job"],
         points: 1,
         userAnswer: null
       },
@@ -440,7 +453,7 @@ export const questions = [
         id: 42,
         question: "If you wanted to find the footage of a strand in a given area, what tool would you use?",
         options: ["Reports > BOM > Support All", "Boundary Tool", "Inspector Panel", "Count them individually"],
-        correctAnswer: "Reports > BOM > Support All",
+        correctAnswer: ["Reports > BOM > Support All"],
         points: 1,
         userAnswer: null
       },
@@ -448,7 +461,7 @@ export const questions = [
         id: 43,
         question: "What views are available in all of your jobs?",
         options: ["Only 'HOME' view", "All saved views, plus 'HOME' view", "None - 'HOME' view is pre-selected from Job Management", "Only recently saved views"],
-        correctAnswer: "All saved views, plus 'HOME' view",
+        correctAnswer: ["All saved views, plus 'HOME' view"],
         points: 1,
         userAnswer: null
       },
@@ -461,7 +474,7 @@ export const questions = [
           "2-port taps are not placed anymore",
           "29-4 can be placed"
         ],
-        correctAnswer: "23-4 can be placed",
+        correctAnswer: ["23-4 can be placed"],
         points: 1,
         userAnswer: null
       },
@@ -469,7 +482,7 @@ export const questions = [
         id: 45,
         question: "Which of the following devices would provide an uneven split in the RF signal?",
         options: ["Power Block", "Balanced 3-way", "ODC8", "2-way"],
-        correctAnswer: "ODC8",
+        correctAnswer: ["ODC8"],
         points: 1,
         userAnswer: null
       },
@@ -482,7 +495,7 @@ export const questions = [
           "When transitioning from an aerial pole line to an underground route (top of pole) when no other equipment is present",
           "All these answers are true"
         ],
-        correctAnswer: "All these answers are true",
+        correctAnswer: ["All these answers are true"],
         points: 1,
         userAnswer: null
       },
@@ -490,7 +503,7 @@ export const questions = [
         id: 47,
         question: "Who is responsible for merging your jobs?",
         options: ["FSE team", "You as the job creator", "Your supervisor", "Construction"],
-        correctAnswer: "You as the job creator",
+        correctAnswer: ["You as the job creator"],
         points: 1,
         userAnswer: null
       },
@@ -503,7 +516,7 @@ export const questions = [
           "Job status will update automatically",
           "Your supervisor will change the job status"
         ],
-        correctAnswer: "Return to Job Management to move the job from status to status",
+        correctAnswer: ["Job status will update automatically"],
         points: 1,
         userAnswer: null
       },
@@ -511,7 +524,7 @@ export const questions = [
         id: 49,
         question: "What fiber equipment will have the Term Panel option when adding internals?",
         options: ["Headends and Cabinets", "Nodes and Hybrids", "Only Headends", "All Fiber Equipment"],
-        correctAnswer: "Headends and Cabinets",
+        correctAnswer: ["All Fiber Equipment"],
         points: 1,
         userAnswer: null
       },
@@ -519,7 +532,7 @@ export const questions = [
         id: 50,
         question: "With a FWD high input signal of 33dB, what value 2-port tap can be placed if the drop level needed is 16dB?",
         options: ["4", "23", "17", "14"],
-        correctAnswer: "17",
+        correctAnswer: ["17"],
         points: 1,
         userAnswer: null
       },
@@ -532,7 +545,7 @@ export const questions = [
           "You cannot reconnect coax or fiber, only strand",
           "Only disconnect upstream and connect downstream"
         ],
-        correctAnswer: "You can reconnect in either direction",
+        correctAnswer: ["You can reconnect in either direction"],
         points: 1,
         userAnswer: null
       },
@@ -545,7 +558,7 @@ export const questions = [
           "Resume RF drafting",
           "Select existing support structure and then choose available device type from the equipment menu"
         ],
-        correctAnswer: "Select existing support structure and then choose available device type from the equipment menu",
+        correctAnswer: ["Select existing support structure and then choose available device type from the equipment menu"],
         points: 1,
         userAnswer: null
       },
@@ -558,7 +571,7 @@ export const questions = [
           "Doubling of the fiber quantity",
           "Multiple analog or digital signals are combined into one signal over a shared medium"
         ],
-        correctAnswer: "Multiple analog or digital signals are combined into one signal over a shared medium",
+        correctAnswer: ["Multiple analog or digital signals are combined into one signal over a shared medium"],
         points: 1,
         userAnswer: null
       },
@@ -571,7 +584,7 @@ export const questions = [
           "Right-click drag to pan around the map",
           "Middle-click drag to pan around the map or use the Arrow Keys"
         ],
-        correctAnswer: "Middle-click drag to pan around the map or use the Arrow Keys",
+        correctAnswer: ["Middle-click drag to pan around the map or use the Arrow Keys"],
         points: 1,
         userAnswer: null
       },
@@ -584,7 +597,7 @@ export const questions = [
           "Only base layers",
           "Only support layers"
         ],
-        correctAnswer: "Only base layers",
+        correctAnswer: ["Only base layers"],
         points: 1,
         userAnswer: null
       },
@@ -597,20 +610,7 @@ export const questions = [
           "Speed of light",
           "Fusion"
         ],
-        correctAnswer: "Index of refraction",
-        points: 1,
-        userAnswer: null
-      },
-      {
-        id: 57,
-        question: "What tool does this button icon represent?",
-        options: [
-          "Delete Vertex",
-          "Warning",
-          "It's not a tool",
-          "Multi-select"
-        ],
-        correctAnswer: "Multi-select",
+        correctAnswer: ["Index of refraction"],
         points: 1,
         userAnswer: null
       },
@@ -623,7 +623,7 @@ export const questions = [
           "32 miles / 50 km",
           "25 miles / 40 km"
         ],
-        correctAnswer: "32 miles / 50 km",
+        correctAnswer: ["32 miles / 50 km"],
         points: 1,
         userAnswer: null
       },
@@ -636,7 +636,7 @@ export const questions = [
           "Home tool",
           "Left panel"
         ],
-        correctAnswer: "Left panel",
+        correctAnswer: ["Left panel"],
         points: 1,
         userAnswer: null
       },
@@ -649,7 +649,7 @@ export const questions = [
           "They require internal splitters",
           "They are HFC devices"
         ],
-        correctAnswer: "They act as ISP muxes",
+        correctAnswer: ["They require internal splitters"],
         points: 1,
         userAnswer: null
       },
@@ -662,7 +662,7 @@ export const questions = [
           "Inspector panel",
           "Search tool"
         ],
-        correctAnswer: "Search tool",
+        correctAnswer: ["Search tool"],
         points: 1,
         userAnswer: null
       },
@@ -675,7 +675,7 @@ export const questions = [
           "When the drop footage exceeds 150'",
           "When the addresses being fed exceed the tap ports"
         ],
-        correctAnswer: "When the addresses being fed exceed the tap ports",
+        correctAnswer: ["Directly off the output of a node"],
         points: 1,
         userAnswer: null
       },
@@ -688,7 +688,7 @@ export const questions = [
           "Once the internal is placed, they are functioning",
           "The common"
         ],
-        correctAnswer: "The common",
+        correctAnswer: ["The common"],
         points: 1,
         userAnswer: null
       },
@@ -709,7 +709,7 @@ export const questions = [
           "Only pertains to aerial equipment",
           "Support can only be associated with one piece of equipment"
         ],
-        correctAnswer: "Cannot be deleted when fiber or coax is connected",
+        correctAnswer: ["Cannot be deleted when fiber or coax is connected"],
         points: 1,
         userAnswer: null
       },
@@ -722,7 +722,7 @@ export const questions = [
           "Update job name and description",
           "All of these are true"
         ],
-        correctAnswer: "All of these are true",
+        correctAnswer: ["All of these are true"],
         points: 1,
         userAnswer: null
       },
@@ -730,7 +730,7 @@ export const questions = [
         id: 67,
         question: "What type of devices are FBTPs in Magellan?",
         options: ["Cabinets", "Splices", "Nodes", "Support Structures"],
-        correctAnswer: "Cabinets",
+        correctAnswer: ["Nodes"],
         points: 1,
         userAnswer: null
       },
@@ -738,7 +738,7 @@ export const questions = [
         id: 68,
         question: "How many fibers are in a standard buffer tube?",
         options: ["10", "24", "8", "12"],
-        correctAnswer: "12",
+        correctAnswer: ["12"],
         points: 1,
         userAnswer: null
       },
@@ -751,7 +751,7 @@ export const questions = [
           "Workspaces",
           "Conflict reports"
         ],
-        correctAnswer: "Saved views",
+        correctAnswer: ["Latitude and longitude coordinates"],
         points: 1,
         userAnswer: null
       },
@@ -764,7 +764,7 @@ export const questions = [
           "You can place equipment on the map and edit during an active workstream session",
           "You must Exit Stream before making any changes to equipment on the map"
         ],
-        correctAnswer: "You can place equipment on the map and edit during an active workstream session",
+        correctAnswer: ["You must hit Confirm Placement before making any changes to the equipment on the map", "You must Exit Stream before making any changes to equipment on the map"],
         points: 1,
         userAnswer: null
       },
@@ -777,7 +777,7 @@ export const questions = [
           "Previous and Next",
           "UUID and Last"
         ],
-        correctAnswer: "Home and Last",
+        correctAnswer: ["Home and Last"],
         points: 1,
         userAnswer: null
       },
@@ -785,7 +785,7 @@ export const questions = [
         id: 72,
         question: "What features can NOT be added using the workstream 'SUB-FEATURES' tool?",
         options: ["Address", "Riser", "Sheath Info Block", "Service Count"],
-        correctAnswer: "Sheath Info Block",
+        correctAnswer: ["Sheath Info Block"],
         points: 1,
         userAnswer: null
       },
@@ -798,7 +798,7 @@ export const questions = [
           "Select Aerial support from workstream",
           "Double-click anywhere on the screen"
         ],
-        correctAnswer: "Select Aerial support from workstream",
+        correctAnswer: ["Select Aerial support from workstream"],
         points: 1,
         userAnswer: null
       },
@@ -811,7 +811,7 @@ export const questions = [
           "It only deletes a copy of your job",
           "You can submit an RDC ticket to recover the job"
         ],
-        correctAnswer: "The job is gone forever",
+        correctAnswer: ["The job is gone forever"],
         points: 1,
         userAnswer: null
       },
@@ -824,7 +824,7 @@ export const questions = [
           "Through levels",
           "Customer levels"
         ],
-        correctAnswer: "Drop levels",
+        correctAnswer: ["Drop levels"],
         points: 1,
         userAnswer: null
       },
@@ -832,7 +832,7 @@ export const questions = [
         id: 76,
         question: "How many RF outputs would a 4x4 segmented node grouping have?",
         options: ["8", "6", "4", "No such thing"],
-        correctAnswer: "4",
+        correctAnswer: ["4"],
         points: 1,
         userAnswer: null
       },
@@ -845,7 +845,7 @@ export const questions = [
           "Node UUID",
           "Saved views"
         ],
-        correctAnswer: "HAF Report",
+        correctAnswer: ["Saved views"],
         points: 1,
         userAnswer: null
       },
@@ -853,7 +853,7 @@ export const questions = [
         id: 78,
         question: "What must be selected before Workstream will function?",
         options: ["Physical location (aerial or underground)", "Title page", "Area spec", "Job status"],
-        correctAnswer: "Physical location (aerial or underground)",
+        correctAnswer: ["Area spec"],
         points: 1,
         userAnswer: null
       },
@@ -866,7 +866,7 @@ export const questions = [
           "Nodes can have 1 or more specs associated with them at the same time",
           "Nodes no longer require spec files in the system"
         ],
-        correctAnswer: "Nodes can have 1 or more specs associated with them at the same time",
+        correctAnswer: ["Hubs require all nodes to have the same node specs"],
         points: 1,
         userAnswer: null
       },
@@ -879,7 +879,7 @@ export const questions = [
           "Require proper approval and documentation before drafting",
           "Are not allowed in Magellan's database"
         ],
-        correctAnswer: "Require proper approval and documentation before drafting",
+        correctAnswer: ["Require proper approval and documentation before drafting"],
         points: 1,
         userAnswer: null
       },
@@ -887,7 +887,7 @@ export const questions = [
         id: 81,
         question: "What is the approximate dB loss through a balanced 2-way split?",
         options: ["~2dB", "~6dB", "~1.5dB", "~3.5dB"],
-        correctAnswer: "~3.5dB",
+        correctAnswer: ["~3.5dB"],
         points: 1,
         userAnswer: null
       },
@@ -895,7 +895,7 @@ export const questions = [
         id: 82,
         question: "When is riser footage added?",
         options: ["Only to fiber", "It is never added", "Only to coax", "Any time cable travels aerial → UG / UG → aerial"],
-        correctAnswer: "Any time cable travels aerial → UG / UG → aerial",
+        correctAnswer: ["Any time cable travels aerial → UG / UG → aerial"],
         points: 1,
         userAnswer: null
       },
@@ -908,7 +908,7 @@ export const questions = [
           "Magellan requires you to click the Update Values button to calculate the dB levels of equipment",
           "Coax is not allowed to back-feed missed addresses"
         ],
-        correctAnswer: "Magellan requires you to click the Update Values button to calculate the dB levels of equipment",
+        correctAnswer: ["You can edit and change any coax type to any other type of coax equipment"],
         points: 1,
         userAnswer: null
       },
@@ -916,7 +916,7 @@ export const questions = [
         id: 84,
         question: "How do you load areas you want to see in Magellan?",
         options: ["Magellan automatically loads areas as you pan", "Query", "Job Management settings", "Search tool"],
-        correctAnswer: "Magellan automatically loads areas as you pan",
+        correctAnswer: ["Magellan automatically loads areas as you pan", "Search tool"],
         points: 1,
         userAnswer: null
       },
@@ -929,7 +929,7 @@ export const questions = [
           "None of the above are true",
           "You can decrease upstream taps for more signal strength at the end of the line"
         ],
-        correctAnswer: "You can decrease upstream taps for more signal strength at the end of the line",
+        correctAnswer: ["None of the above are true","You can decrease upstream taps for more signal strength at the end of the line"],
         points: 1,
         userAnswer: null
       },
@@ -942,7 +942,7 @@ export const questions = [
           "Reports > Powering",
           "It always does it automatically and doesn't need manual function"
         ],
-        correctAnswer: "Analyze Tool in Inspector Panel",
+        correctAnswer: ["Lightning Bolt symbol in Inspector Panel"],
         points: 1,
         userAnswer: null
       },
@@ -958,7 +958,7 @@ export const questions = [
         id: 88,
         question: "What should NOT be inputted into Magellan for this pole?",
         options: ["P1234", "R", "Anchors", "Risers", "Pole Tags", "Service Count"],
-        correctAnswer: "Anchors",
+        correctAnswer: ["Pole Tags"],
         points: 1,
         userAnswer: null
       },
@@ -966,7 +966,7 @@ export const questions = [
         id: 89,
         question: "What modules are contained within the Workstream tool?",
         options: ["Support", "Coax", "Fiber", "All these answers are true"],
-        correctAnswer: "All these answers are true",
+        correctAnswer: ["All these answers are true"],
         points: 1,
         userAnswer: null
       },
@@ -979,7 +979,7 @@ export const questions = [
           "Device MFG and model",
           "All these answers are true"
         ],
-        correctAnswer: "All these answers are true",
+        correctAnswer: ["All these answers are true"],
         points: 1,
         userAnswer: null
       },
@@ -987,7 +987,7 @@ export const questions = [
         id: 91,
         question: "Which of the following reports is available from the Reports Tool?",
         options: ["BOM Report", "Trace Report", "Circuit Report", "OTDR Report"],
-        correctAnswer: "BOM Report",
+        correctAnswer: ["BOM Report"],
         points: 1,
         userAnswer: null
       },
@@ -995,7 +995,7 @@ export const questions = [
         id: 92,
         question: "What pair of fibers should be used first in a new sheath (in most cases)?",
         options: ["Green and Brown", "Red and Black", "Blue and Orange", "Rose and Aqua"],
-        correctAnswer: "Blue and Orange",
+        correctAnswer: ["Blue and Orange"],
         points: 1,
         userAnswer: null
       },
@@ -1008,7 +1008,7 @@ export const questions = [
           "Double-click 1st support > Select route from workstream > Place end vertex in 2nd support > Right-click",
           "Select 1st support > Select route from workstream > Click the 2nd support to connect to"
         ],
-        correctAnswer: "Select 1st support > Select route from workstream > Click the 2nd support to connect to",
+        correctAnswer: ["Select 1st support > Select route from workstream > Click the 2nd support to connect to"],
         points: 1,
         userAnswer: null
       },
@@ -1021,7 +1021,7 @@ export const questions = [
           "All tools are found in this panel",
           "Icons can be hidden"
         ],
-        correctAnswer: "All tools are found in this panel",
+        correctAnswer: ["All tools are found in this panel"],
         points: 1,
         userAnswer: null
       },
@@ -1029,7 +1029,7 @@ export const questions = [
         id: 95,
         question: "Which of the following is NOT a layer that can be toggled in the Layer Manager?",
         options: ["ISP Support", "Address", "OSP Transport", "Hybrid"],
-        correctAnswer: "Hybrid",
+        correctAnswer: ["OSP Transport"],
         points: 1,
         userAnswer: null
       },
@@ -1042,7 +1042,7 @@ export const questions = [
           "Select a device > Click Inspector tool > Review Spec file name",
           "Submit an RDC Support ticket"
         ],
-        correctAnswer: "Select a device > Click Inspector tool > Review Spec file name",
+        correctAnswer: ["Select a device > Click Inspector tool > Review Spec file name"],
         points: 1,
         userAnswer: null
       },
@@ -1050,7 +1050,7 @@ export const questions = [
         id: 97,
         question: "Which of the following is NOT an active device?",
         options: ["Node", "Amp", "Splice Block", "Wi-Fi Tap"],
-        correctAnswer: "Splice Block",
+        correctAnswer: ["Splice Block"],
         points: 1,
         userAnswer: null
       },
@@ -1063,7 +1063,7 @@ export const questions = [
           "It can be changed in sub-features",
           "You cannot"
         ],
-        correctAnswer: "You cannot",
+        correctAnswer: ["Inspector Tool > Select Fiber Count"],
         points: 1,
         userAnswer: null
       },
@@ -1076,7 +1076,7 @@ export const questions = [
           "Update cross-section",
           "Change sheath model"
         ],
-        correctAnswer: "Unsplice all connected fibers on either side of the sheath",
+        correctAnswer: ["Unsplice all connected fibers on either side of the sheath"],
         points: 1,
         userAnswer: null
       },
@@ -1089,7 +1089,7 @@ export const questions = [
           "Left panel > Circuit Manager or Inspector > Splice Matrix",
           "Left panel > Workstream or Utilities"
         ],
-        correctAnswer: "Left panel > Circuit Manager or Inspector > Splice Matrix",
+        correctAnswer: ["Left panel > Circuit Manager or Inspector > Splice Matrix"],
         points: 1,
         userAnswer: null
       },
@@ -1102,7 +1102,7 @@ export const questions = [
           "Blue, Orange, Purple, Indigo, Red, Yellow, Burgundy, Rose, Pink, Turquoise, White, Grey",
           "Blue, Orange, Green, Brown, Slate, White, Red, Black, Yellow, Violet, Rose, Aqua"
         ],
-        correctAnswer: "Blue, Orange, Green, Brown, Slate, White, Red, Black, Yellow, Violet, Rose, Aqua",
+        correctAnswer: ["Blue, Orange, Green, Brown, Slate, White, Red, Black, Yellow, Violet, Rose, Aqua"],
         points: 1,
         userAnswer: null
       }
