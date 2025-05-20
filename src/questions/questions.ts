@@ -16,7 +16,7 @@ export const questions = [
       id: 4,
       question: "How many outputs does a Line Extender have?",
       options: ["1", "2", "3", "4"],
-      correctAnswer: "2",
+      correctAnswer: "1",
       points: 1,
       userAnswer: null
     },
