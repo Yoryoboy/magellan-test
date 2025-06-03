@@ -172,8 +172,27 @@ export const generateTestSummaryPDF = (
       let yPosition = incorrectAnswersSectionY + 15;
       
       incorrectAnswers.forEach((q, index) => {
-        // Add question box
-        const boxHeight = 40;
+        // Calculate dynamic box height based on content
+        let contentHeight = 0;
+        
+        // Estimate question text height
+        const questionLines = doc.splitTextToSize(q.question, 180);
+        contentHeight += questionLines.length * 6;
+        
+        // Estimate user answer height
+        const userAnswerText = q.userAnswer ? q.userAnswer.join(', ') : 'No answer';
+        const userAnswerLines = doc.splitTextToSize(userAnswerText, 120);
+        contentHeight += userAnswerLines.length * 6;
+        
+        // Estimate correct answer height
+        const correctAnswerText = q.correctAnswer.join(', ');
+        const correctAnswerLines = doc.splitTextToSize(correctAnswerText, 120);
+        contentHeight += correctAnswerLines.length * 6;
+        
+        // Calculate box height with padding (minimum 40px)
+        const boxHeight = Math.max(40, contentHeight + 20);
+        
+        // Draw the question box with dynamic height
         drawRoundedRect(doc, 10, yPosition - 5, 190, boxHeight, 4, index % 2 === 0 ? '#F3F4F6' : '#FFFFFF');
         
         // Add question number
@@ -183,29 +202,33 @@ export const generateTestSummaryPDF = (
         
         // Add question text (with word wrap)
         doc.setFont('helvetica', 'normal');
-        const questionLines = doc.splitTextToSize(q.question, 180);
         doc.text(questionLines, 20, yPosition);
         yPosition += questionLines.length * 6 + 4;
         
-        // Add user's answer
+        // Add user's answer with proper wrapping
         doc.setFont('helvetica', 'bold');
         doc.setTextColor('#991B1B'); // Red for incorrect answer
         doc.text('Your answer:', 20, yPosition);
         doc.setFont('helvetica', 'normal');
-        doc.text(q.userAnswer ? q.userAnswer.join(', ') : 'No answer', 70, yPosition);
-        yPosition += 6;
         
-        // Add correct answer
+        // Handle multi-line user answers
+        doc.text(userAnswerLines, 70, yPosition);
+        yPosition += userAnswerLines.length * 6;
+        
+        // Add correct answer with proper wrapping
         doc.setFont('helvetica', 'bold');
         doc.setTextColor('#166534'); // Green for correct answer
         doc.text('Correct answer:', 20, yPosition);
         doc.setFont('helvetica', 'normal');
-        doc.text(q.correctAnswer.join(', '), 70, yPosition);
+        
+        // Handle multi-line correct answers
+        doc.text(correctAnswerLines, 70, yPosition);
         doc.setTextColor('#000000'); // Reset text color
-        yPosition += 15;
+        yPosition += correctAnswerLines.length * 6 + 10;
         
         // Add a new page if we're running out of space
-        if (yPosition > 270 && index < incorrectAnswers.length - 1) {
+        // Use a lower threshold to ensure we have enough space for the next question
+        if (yPosition > 250 && index < incorrectAnswers.length - 1) {
           doc.addPage();
           yPosition = 20;
         }
