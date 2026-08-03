@@ -1,0 +1,12 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+# Server-side proxy for the Notion API — replaces the Vite dev proxy in production.
+# Notion blocks browser CORS, so API calls must go through Netlify's proxy.
+# /api/notion/pages -> https://api.notion.com/v1/pages
+[[redirects]]
+  from = "/api/notion/*"
+  to = "https://api.notion.com/v1/:splat"
+  status = 200
+  force = true
