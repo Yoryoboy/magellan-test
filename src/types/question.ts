@@ -5,4 +5,5 @@ export interface Question {
   correctAnswer: string[];
   points: number;
   userAnswer: string[] | null;
+  image?: string;
 }

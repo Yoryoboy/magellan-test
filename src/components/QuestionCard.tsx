@@ -19,6 +19,15 @@ const QuestionCard = ({ question, onAnswerChange }: QuestionCardProps) => {
           </span>
         )}
       </div>
+      {question.image && (
+        <div className="mb-4 flex justify-center">
+          <img
+            src={question.image}
+            alt="Question icon"
+            className="max-w-full h-auto rounded-md border border-gray-200"
+          />
+        </div>
+      )}
       <div className="space-y-3">
         {question.options.map((option, index) => (
           <div key={index} className="flex items-start">
