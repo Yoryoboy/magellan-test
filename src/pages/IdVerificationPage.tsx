@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { verifyTaskId } from '../api/clickUp';
+import { verifyCandidate } from '../api/notion';
 import type { IdVerificationPageProps } from '../types/testTypes';
 
 
 
-const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue }) => {
+const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue, onAlreadyTaken }) => {
   const [supervisorId, setSupervisorId] = useState('');
   const [error, setError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
@@ -28,17 +28,18 @@ const IdVerificationPage: React.FC<IdVerificationPageProps> = ({ onContinue }) =
       setIsVerifying(true);
       setError('');
       
-      const result = await verifyTaskId(processedId);
-      
-      if (result.valid) {
-        setVerificationSuccess(true);
-        // Save the verified ID to localStorage for later use
-        localStorage.setItem('verifiedTaskId', processedId);
-        // Wait a moment to show success message before continuing
-        setTimeout(() => {
-          onContinue();
-        }, 1500);
-      } else {
+      const result = await verifyCandidate(processedId);
+       
+       if (result.valid && result.pageId) {
+         setVerificationSuccess(true);
+         localStorage.setItem('verifiedTaskId', result.pageId);
+         setTimeout(() => {
+           onContinue();
+         }, 1500);
+       } else if (result.alreadyTaken && result.pageId) {
+         // Test already taken — redirect to results
+         onAlreadyTaken(result.pageId);
+       } else {
         setError(result.error || 'Invalid ID. Please contact your supervisor.');
       }
     } catch (err) {

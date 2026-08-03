@@ -1,156 +1,105 @@
-# Magellan Written Test Application
+# Magellan Written Test
 
-A modern, React-based application for administering and managing written tests with seamless ClickUp integration for tracking and reporting.
+A React single-page application for administering written tests. Candidates enter a supervisor-provided ID, take the test, and see their results immediately. All data is stored in a Notion database — no backend server required.
 
-## 🚀 Overview
+## Quick path
 
-The Magellan Written Test Application is a comprehensive solution designed to streamline the process of administering written tests, tracking results, and providing feedback. Built with React, TypeScript, and Vite, this application offers a smooth user experience while integrating with ClickUp for powerful task management and reporting capabilities.
+1. `pnpm install`
+2. Copy `.env.example` to `.env` and fill in the Notion integration token and database ID.
+3. `pnpm dev` → open http://localhost:5173
+4. `pnpm build` for a production build (output in `dist/`)
 
-## ✨ Features
+## How the test flow works
 
-### User-Facing Features
-- **ID Verification**: Validates supervisor IDs against ClickUp tasks
-- **Test Prevention**: Checks if a test has already been taken to prevent duplicates
-- **User Registration**: Collects test-taker information
-- **Interactive Quiz Interface**: Clean, responsive design for answering questions
-- **Automatic Scoring**: Calculates scores and percentages based on answers
-- **PDF Generation**: Creates beautifully formatted PDF summaries of test results
+1. **Supervisor setup** — pre-create a candidate page in the Notion database with a unique **Candidate ID**.
+2. **ID verification** — the candidate enters their ID; the app queries Notion to validate it.
+   - ID valid and not taken → continue to registration.
+   - ID already taken → redirected straight to the results page.
+3. **Quiz** — answers are saved to `localStorage` on every change, so a reload doesn't lose progress.
+4. **Submission** — the score, percentage, status, and per-question breakdown are written to the candidate's Notion page.
+5. **View results** — the completion modal shows a **View My Results** button that opens the results page immediately (score, percentage, and a question-by-question breakdown with a "failed first" sort option).
+6. **End session** — a button on the quiz header wipes all `localStorage` progress and returns to the start, ready for a new ID.
 
-### ClickUp Integration Features
-- **Task Verification**: Validates test IDs against ClickUp tasks
-- **Status Automation**: Automatically updates task status throughout the test lifecycle
-  - Sets status to "test in progress" when a user starts the test
-  - Updates to "test approved" or "test failed" based on test results
-- **Custom Field Updates**: Updates custom fields in ClickUp with test results
-  - Percentage score
-  - Numeric score
-  - Test completion status
-- **PDF Attachment**: Uploads the test summary PDF directly to the ClickUp task
-- **Data Cleanup**: Automatically clears local data after successful submission
+## Notion integration
 
-## 🛠️ Technical Stack
+The app talks directly to the Notion API from the browser. During development the Vite dev server proxies `/api/notion` → `https://api.notion.com/v1` because Notion blocks cross-origin browser requests.
 
-- **Frontend**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized production builds
-- **Styling**: TailwindCSS for responsive design
-- **PDF Generation**: jsPDF for client-side PDF creation
-- **API Integration**: Axios for ClickUp API communication
-- **State Management**: React Hooks and Context API
-- **Form Handling**: Custom form validation
-- **Storage**: LocalStorage for data persistence between pages
+### Database: "Magellan Pre-test"
 
-## 🔄 Application Flow
+| Property | Type | Notes |
+|----------|------|-------|
+| Candidate | title | Candidate full name (written at test start) |
+| Candidate ID | rich text | Supervisor-provided unique ID |
+| Email | email | Collected at registration |
+| Status | select | See status values below |
+| Score | number | Raw points earned |
+| Percentage | number | Rounded percentage |
+| Test Taken | checkbox | True once submitted — blocks re-entry |
+| Start Date / Completion Date | date | Timestamps of the test lifecycle |
 
-1. **ID Verification Page**:
-   - User enters a supervisor ID
-   - Application validates the ID against ClickUp
-   - Checks if the test has already been taken
+### Status values
 
-2. **Registration Page**:
-   - User enters their name and email
-   - Application updates the ClickUp task status to "test in progress"
+| Status | Meaning |
+|--------|---------|
+| `test in progress` | Candidate started the test |
+| `test approved` | Percentage ≥ 80 |
+| `test failed` | Percentage < 80 |
 
-3. **Quiz Page**:
-   - User answers multiple-choice questions
-   - Progress is saved to localStorage
+### Results storage
 
-4. **Submission Process**:
-   - Calculates final score and percentage
-   - Generates a PDF summary with user information and results
-   - Updates ClickUp task with results and changes status based on score
-   - Uploads the PDF to the ClickUp task
-   - Shows a completion message to the user
-   - Clears localStorage data
+Each candidate page stores the results as blocks: a human-readable summary plus a JSON code block that the results page parses. Note two Notion API limits that the submission code handles:
 
-## 🔌 ClickUp Integration Details
+- **2,000 characters** per rich-text element → long content is chunked.
+- **100 blocks** per append request → the results payload stays under the limit.
 
-The application integrates with ClickUp through their API to provide a seamless workflow:
+## Environment variables
 
-### API Endpoints Used
-- `GET /task/{task_id}` - Verify task existence and check if test was taken
-- `PUT /task/{task_id}` - Update task name, status, and dates
-- `POST /task/{task_id}/field/{field_id}` - Update custom fields with test results
-- `POST /task/{task_id}/attachment` - Upload PDF summary
+| Variable | Description |
+|----------|-------------|
+| `VITE_NOTION_API_KEY` | Notion integration token (create it at https://www.notion.so/my-integrations) |
+| `VITE_NOTION_DATABASE_ID` | ID of the "Magellan Pre-test" database (from the database URL) |
 
-### Custom Fields
-- **Percentage**: Manual progress field for storing the percentage score
-- **Score**: Number field for storing the raw score
-- **Test Taken**: Checkbox field to mark if the test has been completed
+## Tech stack
 
-### Task Statuses
-- **Test In Progress**: Set when user starts the test
-- **Test Approved**: Set when user passes the test (≥80%)
-- **Test Failed**: Set when user fails the test (<80%)
+- **React 19 + TypeScript** — UI
+- **Vite 6** — build tool and dev proxy
+- **Tailwind CSS 4** — styling
+- **Axios** — Notion API client
 
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 16+
-- pnpm (preferred) or npm
-- ClickUp API key
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Yoryoboy/magellan-test.git
-   cd magellan-test
-   ```
-
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-
-3. Create a `.env` file in the root directory with your ClickUp API key:
-   ```
-   VITE_CLICKUP_API_AKEY=your_clickup_api_key
-   ```
-
-4. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-
-5. Build for production:
-   ```bash
-   pnpm build
-   ```
-
-## 📋 Project Structure
+## Project structure
 
 ```
-magellan-written-test/
+├── public/                  # Static assets (favicon)
 ├── src/
-│   ├── api/                 # API integration with ClickUp
+│   ├── api/                 # Notion API layer (verification, submission, results)
 │   ├── components/          # Reusable UI components
 │   ├── hooks/               # Custom React hooks
-│   ├── pages/               # Page components
+│   ├── pages/               # Rules, ID verification, registration, quiz, results
 │   ├── questions/           # Test questions data
 │   ├── types/               # TypeScript type definitions
-│   ├── utils/               # Utility functions
-│   ├── App.tsx              # Main application component
+│   ├── utils/               # Score calculation, localStorage helpers
+│   ├── App.tsx              # Routing and session state
 │   └── main.tsx             # Application entry point
-├── public/                  # Static assets
-├── index.html              # HTML entry point
-├── tailwind.config.js      # TailwindCSS configuration
-├── tsconfig.json           # TypeScript configuration
-├── vite.config.ts          # Vite configuration
-└── package.json            # Project dependencies and scripts
+├── index.html
+├── vite.config.ts           # Dev proxy for /api/notion
+└── package.json
 ```
 
-## 🧪 Future Enhancements
+## Scripts
 
-- **Question Randomization**: Randomize question order for each test
-- **Timed Tests**: Add support for timed tests with automatic submission
-- **Multiple Test Types**: Support for different types of tests
-- **Result Analytics**: Visual analytics for test results
-- **User Authentication**: Add user authentication for more secure access
+| Command | What it does |
+|---------|--------------|
+| `pnpm dev` | Start the dev server (with Notion proxy) |
+| `pnpm build` | Type-check (`tsc -b`) and build to `dist/` |
+| `pnpm lint` | Run ESLint |
+| `pnpm preview` | Preview the production build locally |
 
-## 📝 License
+## Future enhancements
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Production deployment**: Notion blocks browser CORS, so production needs Netlify rewrites or a small server-side proxy (pending).
+- **Candidate ID randomization**: IDs are currently sequential (MAG-001 style); make them non-deterministic.
+- Timed tests, question randomization, analytics, and authentication.
 
-## 👨‍💻 Author
+## License
 
-Created by Jorge Díaz - [GitHub Profile](https://github.com/Yoryoboy)
+MIT. Created by Jorge Díaz — [GitHub Profile](https://github.com/Yoryoboy)

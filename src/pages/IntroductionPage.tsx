@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { STORAGE_KEYS, saveToLocalStorage } from '../utils/localStorage';
-import { updateTaskToInProgress } from '../api/startTest';
+import { startTest } from '../api/notionSubmission';
 import type { UserData, IntroductionPageProps } from '../types/testTypes';
 
 
@@ -70,17 +70,17 @@ const IntroductionPage = ({ onStart }: IntroductionPageProps) => {
       // Save user data to localStorage
       saveToLocalStorage(STORAGE_KEYS.USER_DATA, userData);
       
-      // Update task status to "test in progress" and set task name
+      // Update Notion page status to "test in progress"
       try {
-        const statusUpdated = await updateTaskToInProgress(verifiedTaskId, userData);
+        const statusUpdated = await startTest(verifiedTaskId, userData);
         if (!statusUpdated) {
           // Non-blocking error - we'll continue even if status update fails
-          console.error('Failed to update task status to in progress');
-          setStatusError('Note: Failed to update task status, but you can still continue with the test.');
+          console.error('Failed to update test status to in progress');
+          setStatusError('Note: Failed to update test status, but you can still continue with the test.');
         }
       } catch (error) {
-        console.error('Error updating task status:', error);
-        setStatusError('Note: Failed to update task status, but you can still continue with the test.');
+        console.error('Error updating test status:', error);
+        setStatusError('Note: Failed to update test status, but you can still continue with the test.');
       } finally {
         setIsSubmitting(false);
       }

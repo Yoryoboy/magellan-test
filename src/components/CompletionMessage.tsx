@@ -2,9 +2,10 @@ import React from 'react';
 
 interface CompletionMessageProps {
   isVisible: boolean;
+  onViewResults?: () => void;
 }
 
-const CompletionMessage: React.FC<CompletionMessageProps> = ({ isVisible }) => {
+const CompletionMessage: React.FC<CompletionMessageProps> = ({ isVisible, onViewResults }) => {
   if (!isVisible) return null;
   
   return (
@@ -19,9 +20,18 @@ const CompletionMessage: React.FC<CompletionMessageProps> = ({ isVisible }) => {
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-2">Test Completed</h3>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Your test has been successfully submitted. You will receive feedback soon.
+              Your results have been sent to the supervisor. You can view them right now.
             </p>
           </div>
+          {onViewResults && (
+            <button
+              type="button"
+              onClick={onViewResults}
+              className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              View My Results
+            </button>
+          )}
         </div>
       </div>
     </div>
