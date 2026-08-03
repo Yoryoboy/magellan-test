@@ -11,7 +11,8 @@ A React single-page application for administering written tests. Candidates ente
 
 ## How the test flow works
 
-1. **Supervisor setup** — pre-create a candidate page in the Notion database with a unique **Candidate ID**.
+0. **Admin setup** — from the rules screen, open **Admin** (top-right corner, password-protected) to generate new test entries (random Candidate IDs like `MGT-7K2FQ9XA`) and see every test with its status, score, and percentage. Clicking a row opens that candidate's results.
+1. **Supervisor setup** — pre-create a candidate page in the Notion database with a unique **Candidate ID** (the Admin view does this automatically).
 2. **ID verification** — the candidate enters their ID; the app queries Notion to validate it.
    - ID valid and not taken → continue to registration.
    - ID already taken → redirected straight to the results page.
@@ -58,6 +59,7 @@ Each candidate page stores the results as blocks: a human-readable summary plus 
 |----------|-------------|
 | `VITE_NOTION_API_KEY` | Notion integration token (create it at https://www.notion.so/my-integrations) |
 | `VITE_NOTION_DATABASE_ID` | ID of the "Magellan Pre-test" database (from the database URL) |
+| `VITE_ADMIN_PASSWORD` | Password for the Admin view (defaults to `nomaianomaly`) |
 
 ## Tech stack
 
@@ -74,10 +76,10 @@ Each candidate page stores the results as blocks: a human-readable summary plus 
 │   ├── api/                 # Notion API layer (verification, submission, results)
 │   ├── components/          # Reusable UI components
 │   ├── hooks/               # Custom React hooks
-│   ├── pages/               # Rules, ID verification, registration, quiz, results
+│   ├── pages/               # Rules, ID verification, registration, quiz, results, admin
 │   ├── questions/           # Test questions data
 │   ├── types/               # TypeScript type definitions
-│   ├── utils/               # Score calculation, localStorage helpers
+│   ├── utils/               # Score calculation, localStorage, candidate ID generation
 │   ├── App.tsx              # Routing and session state
 │   └── main.tsx             # Application entry point
 ├── index.html
@@ -97,7 +99,6 @@ Each candidate page stores the results as blocks: a human-readable summary plus 
 ## Future enhancements
 
 - **Production deployment**: Notion blocks browser CORS, so production needs Netlify rewrites or a small server-side proxy (pending).
-- **Candidate ID randomization**: IDs are currently sequential (MAG-001 style); make them non-deterministic.
 - Timed tests, question randomization, analytics, and authentication.
 
 ## License

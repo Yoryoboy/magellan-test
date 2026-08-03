@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { fetchResults } from "../api/notion";
 import type { ResultsPageProps, TestResults } from "../types/testTypes";
 
-const ResultsPage = ({ pageId }: ResultsPageProps) => {
+const ResultsPage = ({ pageId, onBack }: ResultsPageProps) => {
   const [results, setResults] = useState<TestResults | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -89,12 +89,23 @@ const ResultsPage = ({ pageId }: ResultsPageProps) => {
 
   return (
     <div className="min-h-screen bg-white pb-24">
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm relative">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900 text-center">
             Magellan Written Test
           </h1>
         </div>
+        {onBack && (
+          <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              ← Back
+            </button>
+          </div>
+        )}
       </header>
 
       <main>

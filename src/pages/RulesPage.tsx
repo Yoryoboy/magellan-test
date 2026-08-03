@@ -1,12 +1,21 @@
 import React from 'react';
 import type { RulesPageProps } from '../types/testTypes';
 
-const RulesPage: React.FC<RulesPageProps> = ({ onContinue }) => {
+const RulesPage: React.FC<RulesPageProps> = ({ onContinue, onOpenAdmin }) => {
   return (
     <div className="min-h-screen bg-white pb-24">
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm relative">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900 text-center">Magellan Written Test - Official Rules</h1>
+        </div>
+        <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+          <button
+            type="button"
+            onClick={onOpenAdmin}
+            className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            Admin
+          </button>
         </div>
       </header>
 

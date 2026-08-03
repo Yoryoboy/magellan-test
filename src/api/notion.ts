@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NOTION_API_KEY, NOTION_DATABASE_ID } from "../config";
-import type { TestResults, ResultQuestion } from "../types/testTypes";
+import type { TestResults, ResultQuestion, AdminCandidate } from "../types/testTypes";
+import { generateCandidateId } from "../utils/candidateId";
 
 // Notion API client
 export const notion = axios.create({
@@ -158,6 +159,84 @@ export const fetchResults = async (
     };
   } catch (error) {
     console.error("Error fetching results:", error);
+    return null;
+  }
+};
+
+/**
+ * Create a new test entry (candidate page) in the Notion database.
+ * Only generates a random Candidate ID — the name/email are filled at registration.
+ */
+export const createTestEntry = async (): Promise<{
+  success: boolean;
+  pageId?: string;
+  candidateId?: string;
+  error?: string;
+}> => {
+  try {
+    const candidateId = generateCandidateId();
+    const response = await notion.post("/pages", {
+      parent: { database_id: NOTION_DATABASE_ID },
+      properties: {
+        Candidate: {
+          title: [{ text: { content: "Pending Candidate" } }],
+        },
+        "Candidate ID": {
+          rich_text: [{ text: { content: candidateId } }],
+        },
+      },
+    });
+    return { success: true, pageId: response.data.id, candidateId };
+  } catch (error) {
+    console.error("Error creating test entry:", error);
+    return {
+      success: false,
+      error: "Failed to create the test entry. Please try again.",
+    };
+  }
+};
+
+/**
+ * List every test entry (candidate page) in the database, newest first.
+ * Returns null on API failure so callers can show an error.
+ */
+export const listCandidates = async (): Promise<AdminCandidate[] | null> => {
+  try {
+    const response = await notion.post(
+      `/databases/${NOTION_DATABASE_ID}/query`,
+      {
+        page_size: 100,
+        sorts: [{ timestamp: "created_time", direction: "descending" }],
+      }
+    );
+
+    return (response.data.results || []).map((page: Record<string, unknown>) => {
+      const props = (page.properties || {}) as Record<
+        string,
+        Record<string, unknown>
+      >;
+      const richText = (key: string) =>
+        (props[key]?.rich_text as { plain_text?: string }[])?.[0]?.plain_text ?? null;
+      const date = (key: string) =>
+        (props[key]?.date as { start?: string } | undefined)?.start ?? null;
+
+      return {
+        pageId: page.id as string,
+        name:
+          (props.Candidate?.title as { plain_text?: string }[])?.[0]
+            ?.plain_text || "Unknown",
+        candidateId: richText("Candidate ID") || "",
+        email: (props.Email?.email as string) ?? null,
+        status: (props.Status?.select as { name?: string } | undefined)?.name ?? "not started",
+        score: (props.Score?.number as number) ?? null,
+        percentage: (props.Percentage?.number as number) ?? null,
+        testTaken: (props["Test Taken"]?.checkbox as boolean) ?? false,
+        startDate: date("Start Date"),
+        completionDate: date("Completion Date"),
+      };
+    });
+  } catch (error) {
+    console.error("Error listing candidates:", error);
     return null;
   }
 };

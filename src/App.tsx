@@ -4,6 +4,7 @@ import IntroductionPage from "./pages/IntroductionPage";
 import RulesPage from "./pages/RulesPage";
 import IdVerificationPage from "./pages/IdVerificationPage";
 import ResultsPage from "./pages/ResultsPage";
+import AdminPage from "./pages/AdminPage";
 import { STORAGE_KEYS, loadFromLocalStorage } from "./utils/localStorage";
 import type { UserData } from "./types/testTypes";
 
@@ -12,9 +13,21 @@ function App() {
     return loadFromLocalStorage<UserData>(STORAGE_KEYS.USER_DATA);
   });
   const [currentPage, setCurrentPage] = useState<
-    "rules" | "idVerification" | "registration" | "results"
+    "rules" | "idVerification" | "registration" | "results" | "admin"
   >("rules");
   const [resultsPageId, setResultsPageId] = useState<string | null>(null);
+  const [resultsBackTo, setResultsBackTo] = useState<
+    "rules" | "idVerification" | "admin" | null
+  >(null);
+
+  const goToResults = (
+    pageId: string,
+    backTo: "rules" | "idVerification" | "admin"
+  ) => {
+    setResultsPageId(pageId);
+    setResultsBackTo(backTo);
+    setCurrentPage("results");
+  };
 
   const handleStart = (data: UserData) => {
     setUserData(data);
@@ -24,20 +37,36 @@ function App() {
     setCurrentPage("idVerification");
   };
 
+  const handleOpenAdmin = () => {
+    setCurrentPage("admin");
+  };
+
+  const handleBackFromAdmin = () => {
+    setCurrentPage("rules");
+  };
+
   const handleContinueFromIdVerification = () => {
     setCurrentPage("registration");
   };
 
   const handleAlreadyTaken = (pageId: string) => {
-    setResultsPageId(pageId);
-    setCurrentPage("results");
+    goToResults(pageId, "idVerification");
   };
 
   const handleViewResults = () => {
     if (userData?.taskId) {
-      setResultsPageId(userData.taskId);
-      setCurrentPage("results");
+      goToResults(userData.taskId, "rules");
     }
+  };
+
+  const handleViewCandidateFromAdmin = (pageId: string) => {
+    goToResults(pageId, "admin");
+  };
+
+  const handleBackFromResults = () => {
+    setCurrentPage(resultsBackTo ?? "rules");
+    setResultsBackTo(null);
+    setResultsPageId(null);
   };
 
   const handleEndSession = () => {
@@ -54,10 +83,18 @@ function App() {
   return (
     <>
       {currentPage === "results" && resultsPageId ? (
-        <ResultsPage pageId={resultsPageId} />
+        <ResultsPage pageId={resultsPageId} onBack={handleBackFromResults} />
+      ) : currentPage === "admin" ? (
+        <AdminPage
+          onBack={handleBackFromAdmin}
+          onViewCandidate={handleViewCandidateFromAdmin}
+        />
       ) : !userData ? (
         currentPage === "rules" ? (
-          <RulesPage onContinue={handleContinueFromRules} />
+          <RulesPage
+            onContinue={handleContinueFromRules}
+            onOpenAdmin={handleOpenAdmin}
+          />
         ) : currentPage === "idVerification" ? (
           <IdVerificationPage
             onContinue={handleContinueFromIdVerification}

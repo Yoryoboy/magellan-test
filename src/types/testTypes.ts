@@ -23,6 +23,25 @@ export interface IntroductionPageProps {
 
 export interface RulesPageProps {
   onContinue: () => void;
+  onOpenAdmin: () => void;
+}
+
+export interface AdminPageProps {
+  onBack: () => void;
+  onViewCandidate: (pageId: string) => void;
+}
+
+export interface AdminCandidate {
+  pageId: string;
+  name: string;
+  candidateId: string;
+  email: string | null;
+  status: string;
+  score: number | null;
+  percentage: number | null;
+  testTaken: boolean;
+  startDate: string | null;
+  completionDate: string | null;
 }
 
 export interface IdVerificationPageProps {
@@ -32,6 +51,7 @@ export interface IdVerificationPageProps {
 
 export interface ResultsPageProps {
   pageId: string;
+  onBack?: () => void;
 }
 
 // Returned by fetchResults for the results page
