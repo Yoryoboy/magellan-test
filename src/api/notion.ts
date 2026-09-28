@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NOTION_API_KEY, NOTION_DATABASE_ID } from "../config";
+import { NOTION_DATABASE_ID } from "../config";
 import type { TestResults, ResultQuestion, AdminCandidate } from "../types/testTypes";
 import { generateCandidateId } from "../utils/candidateId";
 
@@ -9,8 +9,6 @@ export const notion = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Notion-Version": "2022-06-28",
-    "Authorization": `Bearer ${NOTION_API_KEY}`,
   },
 });
 
