@@ -115,59 +115,27 @@ and a JSON `code` block parsed by `fetchResults()`). Handled automatically.
       bundle still shows 0 token occurrences. **Note:** A7 post-dates the independent
       verification pass, so that one line is not covered by it.
 
-### Phase E — Access control (decisions made)
+### Phase E — Access control (OUT OF SCOPE — user decision)
 
-The proxy removes credential *disclosure* but not *access*. `netlify/edge-functions/notion-proxy.ts`
-forwards any method and any path under `/api/notion/*`, attaches the token, and forwards
-POST/PATCH bodies with no origin, referer, or caller authentication. Any caller who knows
-the site URL can perform authenticated Notion reads **and writes** with no credential
-to steal. This is not a regression (the token was extractable before), but the capability
-surface is unchanged.
+The proxy removes credential *disclosure* but not *access*: it forwards any method and path
+under `/api/notion/*` with the token attached and no caller authentication. Recorded here
+only so the finding is not lost. **Deliberately not being fixed.**
 
-**Decision (product): the test is an autotest, not an exam.**
+The user's scope for this session is: keep the app working exactly as it does today and move
+the database to their own workspace. This app is an internal tool used by the team, and the
+exposures below are accepted consciously rather than new work:
 
-The answer key stays in the client bundle by design, and scoring stays client-side. This is
-an explicit choice, not an oversight, and it must be documented as such: the recorded score
-and the `test approved` / `test failed` status are **not auditable**. A candidate can read
-the answers from the bundle and can write an arbitrary score; both are accepted
-consequences. Removing the answer key would break per-question immediate feedback, which is
-the point of an autotest.
+- Anonymous callers can POST a filterless query and retrieve every candidate.
+- Anonymous callers can write (create entries, patch pages) through the proxy.
+- The answer key ships in the bundle (106 occurrences) and scoring runs client-side, so the
+  recorded score and the `test approved` / `test failed` status are not auditable.
+- `VITE_ADMIN_PASSWORD` is inlined in the bundle; the admin gate is a client-side `if`.
 
-**Decision (access): supervisor access uses Netlify Identity.**
+None of this affects the stated goal. Do not reopen it without an explicit request.
 
-Free on all credit-based plans, unlimited active users, RBAC roles, and server-side
-verification inside Edge Functions via `@netlify/identity` `getUser()`. Netlify's site
-password protection was rejected: it is Pro-only, single shared password, explicitly "a
-door, not an account system", has no API or CLI surface, and would also gate candidates.
-
-**Remaining exposure that survives the autotest decision — candidate PII.**
-
-Even with an untrustworthy score, the relay still exposes data that has nothing to do with
-score integrity. `listCandidates` reads every candidate page, and more importantly any
-caller can POST an arbitrary filter to `/databases/{id}/query` with **no filter at all**,
-enumerating every candidate's name, email, score, and per-question answers. That is a
-privacy leak to the open internet, not an exam-integrity issue.
-
-**Required: restrict the relay per operation.**
-
-Allow-listing by operation, not by method:
-
-| Caller | Allowed |
-|---|---|
-| Anonymous (candidate) | Validate a Candidate ID — a filtered query bound to that one ID, never an unfiltered query. Mark the test started on that page. Write the result block to that page. |
-| Supervisor (Identity role) | Everything else: unfiltered listing, arbitrary page reads, creating test entries. |
-
-The load-bearing rule is that an **unfiltered or caller-supplied-filter query must never be
-reachable anonymously**, because that single omission is what leaks the whole candidate list.
-
-- [ ] **E1** Implement the per-operation allow-list in the edge function.
-- [ ] **E2** Enable Netlify Identity, define the supervisor role, and gate supervisor
-      operations on `getUser()` inside the edge function.
-- [ ] **E3** Replace the client-side `ADMIN_PASSWORD` comparison and drop
-      `VITE_ADMIN_PASSWORD` from the bundle (closes C5).
-- [ ] **E4** Document the autotest decision and the non-auditability of the score.
 - [ ] **E5** Production edge runtime remains unverified: local emulation ran Deno 2.9.6,
-      which is not the hosted runtime. Verify after the first deploy.
+      which is not the hosted runtime. Worth a look after the first deploy, since a broken
+      edge function would break the app rather than merely expose it.
 
 ---
 
