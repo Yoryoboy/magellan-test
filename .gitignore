@@ -27,3 +27,6 @@ dist-ssr
 .codegraph/
 .atl/
 .playwright-cli/
+
+# Local Netlify folder
+.netlify
