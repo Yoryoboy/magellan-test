@@ -23,7 +23,12 @@ A React single-page application for administering written tests. Candidates ente
 
 ## Notion integration
 
-The app talks directly to the Notion API from the browser. During development the Vite dev server proxies `/api/notion` → `https://api.notion.com/v1` because Notion blocks cross-origin browser requests.
+The browser never talks to the Notion API directly and never holds the integration token. The app calls same-origin `/api/notion/*` endpoints, and the token is attached server-side:
+
+- **Local dev** — the Vite dev server proxies `/api/notion` → `https://api.notion.com/v1` and injects `Authorization` plus `Notion-Version` from `NOTION_API_KEY` (see `vite.config.ts`).
+- **Production** — a Netlify Edge Function (`netlify/edge-functions/notion-proxy.ts`, bound to `/api/notion/*`) forwards the method, body, and `Content-Type` to `https://api.notion.com/v1`, injecting `Authorization` plus `Notion-Version` from the `NOTION_API_KEY` environment variable. In production that variable is set in the Netlify UI with Functions scope; its value is frozen at deploy time, so rotating the token requires a redeploy.
+
+The Notion API contract (`Notion-Version`) lives in exactly one place — the proxy — so the client sends no auth headers. The database id stays client-side on purpose, so switching databases is a one-variable change (`VITE_NOTION_DATABASE_ID`).
 
 ### Database: "Magellan Pre-test"
 
@@ -57,7 +62,7 @@ Each candidate page stores the results as blocks: a human-readable summary plus 
 
 | Variable | Description |
 |----------|-------------|
-| `VITE_NOTION_API_KEY` | Notion integration token (create it at https://www.notion.so/my-integrations) |
+| `NOTION_API_KEY` | Notion integration token, server-side only (no `VITE_` prefix — a `VITE_`-prefixed variable would be inlined into the browser bundle). Create it at https://www.notion.so/my-integrations. Set it in `.env` locally; in production set it in the Netlify UI with Functions scope |
 | `VITE_NOTION_DATABASE_ID` | ID of the "Magellan Pre-test" database (from the database URL) |
 | `VITE_ADMIN_PASSWORD` | Password for the Admin view (defaults to `nomaianomaly`) |
 
@@ -98,7 +103,7 @@ Each candidate page stores the results as blocks: a human-readable summary plus 
 
 ## Future enhancements
 
-- **Production deployment**: Notion blocks browser CORS, so production needs Netlify rewrites or a small server-side proxy (pending).
+- **Production proxy**: Notion blocks browser CORS, so production traffic goes through the Netlify Edge Function (`netlify/edge-functions/notion-proxy.ts`).
 - Timed tests, question randomization, analytics, and authentication.
 
 ## License
