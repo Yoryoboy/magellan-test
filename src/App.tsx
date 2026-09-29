@@ -63,12 +63,6 @@ function App() {
     goToResults(pageId, "admin");
   };
 
-  const handleBackFromResults = () => {
-    setCurrentPage(resultsBackTo ?? "rules");
-    setResultsBackTo(null);
-    setResultsPageId(null);
-  };
-
   const handleEndSession = () => {
     // Wipe all test state so the next ID starts clean
     localStorage.removeItem(STORAGE_KEYS.USER_DATA);
@@ -78,6 +72,19 @@ function App() {
     setUserData(null);
     setResultsPageId(null);
     setCurrentPage("rules");
+  };
+
+  const handleBackFromResults = () => {
+    // The results of a finished test are terminal: leaving them must not drop
+    // the candidate back into the editable quiz, so the session is closed and
+    // they return to the instructions page.
+    if (resultsBackTo === "rules") {
+      handleEndSession();
+      return;
+    }
+    setCurrentPage(resultsBackTo ?? "rules");
+    setResultsBackTo(null);
+    setResultsPageId(null);
   };
 
   return (
